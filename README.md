@@ -23,7 +23,7 @@ The cola day application is a central web based application that meets the follo
 
 ## Requirements
 
- - Java 8
+ - Java 11
  - Maven 3.5
 
 ## Build
@@ -36,15 +36,15 @@ mvn clean package
 
 ###  IDE
 
-Run the main class `com.coladay.ColadayApplication`
+Run the main class `Bootstrap`
 
 ###  Maven
 
-Open your terminal, navigate to the `coladay` source directory then run the following command `mvn spring-boot:run`
+Open your terminal, navigate to the `cola-day` source directory then run the following command `mvn spring-boot:run`
 
 ### Java
 
-Open your terminal, navigate to the `coladay` source directory then run the following command `java -jar target\coladay-0.0.1-SNAPSHOT.jar`
+Open your terminal, navigate to the `cola-day` source directory then run the following command `java -jar target\coladay-0.0.1-SNAPSHOT.jar`
 
 
 ## Design
@@ -115,10 +115,7 @@ find more by navigating the links relations in the responses
 ### Create a reservation by specifying a room and a time slot
 
 ```
-curl -u user1:password1 'http://localhost:8080/reservations' -i -X POST \  
-    -H 'Content-Type: application/json;charset=UTF-8' \  
-    -H 'Accept: application/hal+json' \  
-    -d '{"timeSlot":"NINE_AM_TO_TEN_AM","room":"/rooms/2"}'
+curl -u user1:password1 'http://localhost:8080/reservations' -i -X POST -H 'Content-Type: application/json;charset=UTF-8' -H 'Accept: application/hal+json' -d '{"timeSlot":"NINE_AM_TO_TEN_AM","room":"/rooms/2"}'
 {
   "timeSlot" : "TEN_AM_TO_ELEVEN_AM",
   "_links" : {
@@ -145,7 +142,7 @@ curl -u user1:password1 'http://localhost:8080/reservations' -i -X POST \
 
 ### Show room availability
  ```  
- curl -u user1:password1 'http://localhost:8080/rooms/3/reservations
+ curl -u user1:password1 'http://localhost:8080/rooms/3/reservations'
 {
   "_embedded" : {
     "reservations" : [ {

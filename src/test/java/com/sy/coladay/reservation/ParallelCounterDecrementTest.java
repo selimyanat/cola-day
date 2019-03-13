@@ -1,0 +1,41 @@
+package com.sy.coladay.reservation;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.anarsoft.vmlens.concurrent.junit.ConcurrentTestRunner;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+/**
+ * Test class to assert that the <code>Counter</code> decrement operation is not subject to race
+ * conditions.
+ *
+ * <p>Basically, the test down below gets executed in parallel by 4 threads and finally the
+ * method marked with the annotation <code>After</code> is called and checks the current counter
+ * value.
+ * </p>
+ *
+ * @author selim
+ */
+@RunWith(ConcurrentTestRunner.class)
+@Slf4j
+public class ParallelCounterDecrementTest {
+
+  static final int COUNTER_LIMIT = 2;
+
+  Counter counter = new Counter(COUNTER_LIMIT);
+
+  @Test
+  public void increment_counter() {
+    LOG.debug("Thread {} Attempt to decrement counter...", Thread.currentThread().getName());
+    counter.increment();
+  }
+
+  @After
+  public void counter_value_should_be_equal_to_zero() {
+    assertThat(counter.getOffset()).isEqualTo(COUNTER_LIMIT);
+  }
+
+}
