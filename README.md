@@ -40,11 +40,16 @@ Run the main class `Bootstrap`
 
 ###  Maven
 
-Open your terminal, navigate to the `cola-day` source directory then run the following command `mvn spring-boot:run`
-
+Open your terminal, navigate to the `cola-day` source directory then run the following command 
+```
+mvnx spring-boot:run
+```
 ### Java
 
-Open your terminal, navigate to the `cola-day` source directory then run the following command `java -jar target\coladay-0.0.1-SNAPSHOT.jar`
+Open your terminal, navigate to the `cola-day` source directory then run the following command
+```
+java -jar target\coladay-0.0.1-SNAPSHOT.jar
+```
 
 
 ## Design
