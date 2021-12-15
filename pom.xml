@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
 
+
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.coladay</groupId>
 	<artifactId>coladay</artifactId>
 	<version>1.1.0-SNAPSHOT</version>
@@ -22,7 +23,16 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
+		<jib.maven.plugin>2.0.0</jib.maven.plugin>
 	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Cola-day</name>
+			<url>https://maven.pkg.github.com/selimyanat/cola-day</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -96,7 +106,6 @@
 			<artifactId>concurrent-junit</artifactId>
 			<version>1.0.2</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -133,7 +142,27 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			<plugin>
+				<!-- https://cloud.google.com/java/getting-started/jib   mvn compile jib:dockerBuild
+          https://www.javacodegeeks.com/2019/11/spring-boot-microservices-docker-and-kubernetes-workshop-part3.html
+        -->
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>${jib.maven.plugin}</version>
+				<configuration>
+					<from>
+						<image>gcr.io/distroless/java:11</image>
+					</from>
+					<to>
+						<image>sy/${project.artifactId}:${project.version}</image>
+					</to>
+					<container>
+						<ports>
+							<port>8080</port>
+						</ports>
+					</container>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
