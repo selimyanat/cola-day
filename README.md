@@ -1,8 +1,5 @@
 # Cola day Application
-docker tag local-image:tagname new-repo:tagname
-docker push new-repo:tagname
-docker push selimyanat/coladay:tagname
-docker push selimyanat/coladay:latest
+
 ## Introduction
 
 The cola day application is a central web based application that meets the following business problem: 
