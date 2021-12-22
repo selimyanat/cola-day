@@ -24,6 +24,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
 		<jib.maven.plugin>2.0.0</jib.maven.plugin>
+		<checkstyle.config.location>google_checks.xml</checkstyle.config.location>
 	</properties>
 
 	<distributionManagement>
@@ -162,6 +163,32 @@
 						</ports>
 					</container>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<configuration>
+							<!-- google_check ruleset enforced with the environment variable
+							-Dcheckstyle.config.location=google_checks.xml. See the properties
+							section at the beginning of the pom.xml
+							-->
+							<encoding>UTF-8</encoding>
+							<includeTestSourceDirectory>true</includeTestSourceDirectory>
+							<consoleOutput>true</consoleOutput>
+							<failsOnError>true</failsOnError>
+							<failOnViolation>true</failOnViolation>
+							<propertyExpansion>checkstyle.suppressions.file=${project.basedir}/checkstyle/checkstyle-suppressions.xml</propertyExpansion>
+						</configuration>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

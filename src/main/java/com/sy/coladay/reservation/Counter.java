@@ -25,7 +25,7 @@ class Counter {
     lock.lock();
     boolean result = false;
     if (offset < limit) {
-      offset ++;
+      offset++;
       result = true;
     }
     lock.unlock();

@@ -1,9 +1,9 @@
 package com.sy.coladay.reservation;
 
-import com.sy.coladay.room.Room;
-import com.sy.coladay.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sy.coladay.room.Room;
+import com.sy.coladay.user.User;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;

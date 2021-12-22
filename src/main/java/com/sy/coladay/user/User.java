@@ -1,7 +1,7 @@
 package com.sy.coladay.user;
 
-import com.sy.coladay.company.Companies;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sy.coladay.company.Companies;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;

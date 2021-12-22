@@ -86,7 +86,7 @@ class QuotaService {
 
     final Predicate<Reservation> isQuotaLimitReached = meeting1 -> counter.increment();
     if (isQuotaLimitReached.negate().test(reservation)) {
-      throw new QuotaLimitReachedException(String.format("Reservation for %s company cannot be created "
+      throw new QuotaLimitReachedException(format("Reservation for %s company cannot be created "
               + "because the quota limit is already reached.",
           reservation.getOrganizer().getCompany()));
     }

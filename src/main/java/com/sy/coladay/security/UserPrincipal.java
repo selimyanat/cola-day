@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Implementation of {@link UserDetails}
+ * Implementation of {@link UserDetails}.
  */
 @AllArgsConstructor
 @Data

@@ -19,7 +19,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * ITest for {@link RoomRepository}
+ * ITest for {@link RoomRepository}.
  */
 @ExtendWith(SpringExtension.class)
 @DataJpaTest

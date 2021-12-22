@@ -12,7 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 /**
- * Test class for {@link BaseErrorController}
+ * Test class for {@link BaseErrorController}.
  */
 @ExtendWith(MockitoExtension.class)
 class BaseErrorControllerTest {
