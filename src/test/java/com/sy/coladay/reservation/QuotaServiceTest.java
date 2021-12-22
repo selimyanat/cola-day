@@ -21,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 /**
- * Test class for {@link QuotaService}
+ * Test class for {@link QuotaService}.
  */
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -51,8 +51,8 @@ class QuotaServiceTest {
     when(proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs())).thenReturn(reservation);
     when(reservation.getOrganizer()).thenReturn(user);
 
-    when(meetingRepository.countByOrganizerCompany(Companies.COKE)).thenReturn(0l);
-    when(meetingRepository.countByOrganizerCompany(Companies.PEPSI)).thenReturn(0l);
+    when(meetingRepository.countByOrganizerCompany(Companies.COKE)).thenReturn(0L);
+    when(meetingRepository.countByOrganizerCompany(Companies.PEPSI)).thenReturn(0L);
     underTest = new QuotaService(meetingRepository, QUOTA, QUOTA);
   }
 
@@ -114,7 +114,7 @@ class QuotaServiceTest {
     counter.increment();
     assertThat(counter.getOffset()).isEqualTo(1);
     when(user.getCompany()).thenReturn(company);
-    when(proceedingJoinPoint.getArgs()).thenReturn(new Object[]{1l});
+    when(proceedingJoinPoint.getArgs()).thenReturn(new Object[]{1L});
     when(meetingRepository.findById((Long) proceedingJoinPoint.getArgs()[0]))
         .thenReturn(Optional.of(reservation));
 
@@ -132,7 +132,7 @@ class QuotaServiceTest {
     counter.increment();
     assertThat(counter.getOffset()).isEqualTo(1);
     when(user.getCompany()).thenReturn(company);
-    when(proceedingJoinPoint.getArgs()).thenReturn(new Object[]{1l});
+    when(proceedingJoinPoint.getArgs()).thenReturn(new Object[]{1L});
     when(meetingRepository.findById((Long) proceedingJoinPoint.getArgs()[0]))
         .thenReturn(Optional.empty());
 

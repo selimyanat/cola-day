@@ -52,9 +52,11 @@ class ReservationRepositoryListener {
     final User authenticatedUser = getAuthenticatedUser();
     final Predicate<User> isDeletionAllowed = user -> reservation.getOrganizer().equals(user);
     if (isDeletionAllowed.negate().test(authenticatedUser)) {
-      LOG.info(
-          "Reservation {} deletion is forbidden for user {}. Reservation can only be deleted by its "
-              + "owner {}", reservation.getId(), authenticatedUser);
+      LOG.info("Reservation {} deletion is forbidden for user {}. Reservation can only be deleted "
+                   + "by its owner",
+          reservation.getId(),
+          authenticatedUser
+      );
       throw new ReservationCancellationForbiddenException(
           format("User %s is not allowed to delete this reservation %d",
               authenticatedUser.getName(), reservation.getId()));

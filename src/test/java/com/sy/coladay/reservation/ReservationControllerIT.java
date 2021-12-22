@@ -11,9 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sy.coladay.user.User;
 import com.sy.coladay.user.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.SneakyThrows;
@@ -54,8 +54,8 @@ class ReservationControllerIT {
 
   @BeforeEach
   void setUp() {
-    cokeUser = userRepository.findById(1l).get();
-    pepsiUser = userRepository.findById(2l).get();
+    cokeUser = userRepository.findById(1L).get();
+    pepsiUser = userRepository.findById(2L).get();
   }
 
   @Test
@@ -68,19 +68,19 @@ class ReservationControllerIT {
     reservation.put("room", "/rooms/1");
 
     mockMvc.perform(post("/reservations")
-        .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
-        .content(objectMapper.writeValueAsString(reservation))
-        .contentType(MediaType.APPLICATION_JSON)
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(header().exists("location"))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.timeSlot", is("NINE_AM_TO_TEN_AM")))
-        .andExpect(jsonPath("$._links.length()", is(4)))
-        .andExpect(jsonPath("$._links.self", notNullValue()))
-        .andExpect(jsonPath("$._links.reservation", notNullValue()))
-        .andExpect(jsonPath("$._links.organizer", notNullValue()))
-        .andExpect(jsonPath("$._links.room", notNullValue()));
+                        .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
+                        .content(objectMapper.writeValueAsString(reservation))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(header().exists("location"))
+           .andExpect(status().isCreated())
+           .andExpect(jsonPath("$.timeSlot", is("NINE_AM_TO_TEN_AM")))
+           .andExpect(jsonPath("$._links.length()", is(4)))
+           .andExpect(jsonPath("$._links.self", notNullValue()))
+           .andExpect(jsonPath("$._links.reservation", notNullValue()))
+           .andExpect(jsonPath("$._links.organizer", notNullValue()))
+           .andExpect(jsonPath("$._links.room", notNullValue()));
   }
 
   @Test
@@ -92,13 +92,13 @@ class ReservationControllerIT {
     reservation.put("room", "/rooms/1");
 
     mockMvc.perform(post("/reservations")
-        .with(httpBasic("unknownUser", "aPassword"))
-        .content(objectMapper.writeValueAsString(reservation))
-        .contentType(MediaType.APPLICATION_JSON)
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(status().isUnauthorized())
-        .andExpect(status().reason("Unauthorized"));
+                        .with(httpBasic("unknownUser", "aPassword"))
+                        .content(objectMapper.writeValueAsString(reservation))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isUnauthorized())
+           .andExpect(status().reason("Unauthorized"));
   }
 
   @Test
@@ -111,13 +111,13 @@ class ReservationControllerIT {
     reservationOnBusySchedule.put("room", "/rooms/1");
 
     mockMvc.perform(post("/reservations")
-        .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
-        .content(objectMapper.writeValueAsString(reservationOnBusySchedule))
-        .contentType(MediaType.APPLICATION_JSON)
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(status().isConflict())
-        .andExpect(status().reason("The data presented are in conflict with existing ones"));
+                        .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
+                        .content(objectMapper.writeValueAsString(reservationOnBusySchedule))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isConflict())
+           .andExpect(status().reason("The data presented are in conflict with existing ones"));
   }
 
   @Test
@@ -130,25 +130,25 @@ class ReservationControllerIT {
     firstReservation.put("room", "/rooms/10");
 
     mockMvc.perform(post("/reservations")
-        .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
-        .content(objectMapper.writeValueAsString(firstReservation))
-        .contentType(MediaType.APPLICATION_JSON)
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(status().isCreated());
+                        .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
+                        .content(objectMapper.writeValueAsString(firstReservation))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isCreated());
 
     final Map<String, String> reservation = new HashMap<>();
     reservation.put("timeSlot", TimeSlots.TEN_AM_TO_ELEVEN_AM.name());
     reservation.put("room", "/rooms/1");
 
     mockMvc.perform(post("/reservations")
-        .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
-        .content(objectMapper.writeValueAsString(reservation))
-        .contentType(MediaType.APPLICATION_JSON)
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(status().isConflict())
-        .andExpect(status().reason("Quota limit reached"));
+                        .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
+                        .content(objectMapper.writeValueAsString(reservation))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isConflict())
+           .andExpect(status().reason("Quota limit reached"));
   }
 
   @Test
@@ -156,26 +156,27 @@ class ReservationControllerIT {
   void getReservations_return_200() {
 
     mockMvc.perform(get("/reservations")
-        .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$._embedded.reservations[0].timeSlot",
-            is("EIGHT_AM_TO_NINE_AM")))
-        .andExpect(jsonPath("$._embedded.reservations[0]._links.length()", is(4)))
-        .andExpect(jsonPath("$._embedded.reservations[0]._links.self", notNullValue()))
-        .andExpect(jsonPath("$._embedded.reservations[0]._links.reservation", notNullValue()))
-        .andExpect(jsonPath("$._embedded.reservations[0]._links.organizer", notNullValue()))
-        .andExpect(jsonPath("$._embedded.reservations[0]._links.room", notNullValue()))
-        .andExpect(jsonPath("$._links.length()", is(3)))
-        .andExpect(jsonPath("$._links.self", notNullValue()))
-        .andExpect(jsonPath("$._links.profile", notNullValue()))
-        .andExpect(jsonPath("$._links.search", notNullValue()))
-        .andExpect(jsonPath("$.page", notNullValue()))
-        .andExpect(jsonPath("$.page.size", is(20)))
-        .andExpect(jsonPath("$.page.totalElements", is(1)))
-        .andExpect(jsonPath("$.page.totalPages", is(1)))
-        .andExpect(jsonPath("$.page.number", is(0)));
+                        .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$._embedded.reservations[0].timeSlot",
+                               is("EIGHT_AM_TO_NINE_AM")
+           ))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.length()", is(4)))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.self", notNullValue()))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.reservation", notNullValue()))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.organizer", notNullValue()))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.room", notNullValue()))
+           .andExpect(jsonPath("$._links.length()", is(3)))
+           .andExpect(jsonPath("$._links.self", notNullValue()))
+           .andExpect(jsonPath("$._links.profile", notNullValue()))
+           .andExpect(jsonPath("$._links.search", notNullValue()))
+           .andExpect(jsonPath("$.page", notNullValue()))
+           .andExpect(jsonPath("$.page.size", is(20)))
+           .andExpect(jsonPath("$.page.totalElements", is(1)))
+           .andExpect(jsonPath("$.page.totalPages", is(1)))
+           .andExpect(jsonPath("$.page.number", is(0)));
   }
 
   @Test
@@ -183,11 +184,11 @@ class ReservationControllerIT {
   void getReservations_unauthenticated_return_401() {
 
     mockMvc.perform(get("/reservations")
-        .with(httpBasic("unknownUser", "aPassword"))
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(status().isUnauthorized())
-        .andExpect(status().reason("Unauthorized"));
+                        .with(httpBasic("unknownUser", "aPassword"))
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isUnauthorized())
+           .andExpect(status().reason("Unauthorized"));
   }
 
   @Test
@@ -195,11 +196,11 @@ class ReservationControllerIT {
   void cancelReservation_unauthenticated_return_401() {
 
     mockMvc.perform(delete("/reservations/{id}", 1)
-        .with(httpBasic("unknownUser", "aPassword"))
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(status().isUnauthorized())
-        .andExpect(status().reason("Unauthorized"));
+                        .with(httpBasic("unknownUser", "aPassword"))
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isUnauthorized())
+           .andExpect(status().reason("Unauthorized"));
   }
 
   @Test
@@ -208,10 +209,10 @@ class ReservationControllerIT {
   void cancelReservation_return_204() {
 
     mockMvc.perform(delete("/reservations/{id}", 1)
-        .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(status().isNoContent());
+                        .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isNoContent());
   }
 
   @Test
@@ -219,10 +220,10 @@ class ReservationControllerIT {
   void cancelReservation_ofAnotherUser_return_403() {
 
     mockMvc.perform(delete("/reservations/{id}", 1)
-        .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
-        .accept(MediaTypes.HAL_JSON_VALUE))
-        .andDo(print())
-        .andExpect(status().isForbidden())
-        .andExpect(status().reason("Forbidden reservation cancellation"));
+                        .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isForbidden())
+           .andExpect(status().reason("Forbidden reservation cancellation"));
   }
 }

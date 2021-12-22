@@ -21,7 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * ITest class for {@link ReservationRepository}
+ * ITest class for {@link ReservationRepository}.
  */
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -39,8 +39,8 @@ class ReservationRepositoryIT {
   @Test
   void saveNewReservation_withNullTimeSlot_ok() {
     final Reservation reservation = new Reservation(null, null,
-        roomRepository.findById(10l).get(),
-        underTest.findById(1l).get());
+        roomRepository.findById(10L).get(),
+        underTest.findById(1L).get());
 
     assertConstraintViolationExceptionOnsaveNewReservation(reservation, "time slot cannot be null");
   }
@@ -49,7 +49,7 @@ class ReservationRepositoryIT {
   void saveNewReservation_withNullRoom_ok() {
     final Reservation reservation = new Reservation(null, TimeSlots.EIGHT_AM_TO_NINE_AM,
         null,
-        underTest.findById(1l).get());
+        underTest.findById(1L).get());
 
     assertConstraintViolationExceptionOnsaveNewReservation(reservation, "room cannot be null");
   }
@@ -57,7 +57,7 @@ class ReservationRepositoryIT {
   @Test
   void saveNewReservation_withNullUser_ok() {
     final Reservation reservation = new Reservation(null, TimeSlots.EIGHT_AM_TO_NINE_AM,
-        roomRepository.findById(10l).get(),
+        roomRepository.findById(10L).get(),
         null);
 
     assertConstraintViolationExceptionOnsaveNewReservation(reservation, "organizer cannot be null");
@@ -66,8 +66,8 @@ class ReservationRepositoryIT {
   @Test
   void saveNewReservation_onBusySchedule_throwException() {
     final Reservation reservation = new Reservation(null, TimeSlots.EIGHT_AM_TO_NINE_AM,
-        roomRepository.findById(1l).get(),
-        underTest.findById(1l).get());
+        roomRepository.findById(1L).get(),
+        underTest.findById(1L).get());
 
     assertThatThrownBy(() -> reservationRepository.save(reservation))
         .isInstanceOf(DataIntegrityViolationException.class);
@@ -76,8 +76,8 @@ class ReservationRepositoryIT {
   @Test
   void saveNewReservation_ok() {
     final Reservation reservation = new Reservation(null, TimeSlots.EIGHT_AM_TO_NINE_AM,
-        roomRepository.findById(10l).get(),
-        underTest.findById(2l).get());
+        roomRepository.findById(10L).get(),
+        underTest.findById(2L).get());
 
     assertThat(reservationRepository.save(reservation).getId()).isNotNull();
   }

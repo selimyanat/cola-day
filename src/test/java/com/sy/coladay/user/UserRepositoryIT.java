@@ -21,7 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * ITest class for {@link UserRepository}
+ * ITest class for {@link UserRepository}.
  * @author selim
  */
 @ExtendWith(SpringExtension.class)
@@ -94,7 +94,7 @@ class UserRepositoryIT {
 
     assertAll(
         () -> assertThat(user.isPresent()).isTrue(),
-        () -> assertThat(user.get().getId()).isEqualTo(1l),
+        () -> assertThat(user.get().getId()).isEqualTo(1L),
         () -> assertThat(user.get().getName()).isEqualTo("user1"),
         () -> assertThat(user.get().getPassword()).isEqualTo("password1"),
         () -> assertThat(user.get().getCompany()).isEqualTo(Companies.COKE));

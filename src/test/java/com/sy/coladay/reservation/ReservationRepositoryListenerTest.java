@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
- * Test class for {@link ReservationRepository}
+ * Test class for {@link ReservationRepository}.
  */
 @ExtendWith(MockitoExtension.class)
 class ReservationRepositoryListenerTest {

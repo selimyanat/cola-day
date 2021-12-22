@@ -44,7 +44,7 @@ class UserControllerIT {
 
   @BeforeEach
   public void setUp() {
-    cokeUser = userRepository.findById(1l).get();
+    cokeUser = userRepository.findById(1L).get();
   }
 
   @Test

@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for {@link Counter}
+ * Test class for {@link Counter}.
  */
 class CounterTest {
 
