@@ -1,0 +1,11 @@
+#! /bin/bash
+
+# Color variables
+green='\033[0;32m'
+red='\033[0;31m'
+# Clear the color after that
+clear='\033[0m'
+echo -e "${green}Running pre-commit hook:${clear}"
+
+# Run linting and unit tests
+mvn clean test

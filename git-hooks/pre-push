@@ -1,0 +1,10 @@
+#! /bin/bash
+
+# Color variables
+green='\033[0;32m'
+# Clear the color after that
+clear='\033[0m'
+
+# Run linting, unit, integration tests
+echo -e "${green}Running pre-push hook:${clear}"
+mvn clean verify

@@ -125,6 +125,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<!-- Execute integration tests for files with IT extension. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
@@ -187,6 +188,33 @@
 						<goals>
 							<goal>check</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Git hooks: The maven-resources-plugin copies the hooks from a git-hooks source
+			directory to the .git/hooks destination folder.
+			After that, calling the command mvn validate or any other maven command that
+			calls validate, like package, will install the hooks in the first place. Credit to
+			https://blog.mimacom.com/adding-git-hooks/
+			-->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>copy-hooks</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/.git/hooks</outputDirectory>
+							<resources>
+								<resource>
+									<directory>git-hooks</directory>
+								</resource>
+							</resources>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

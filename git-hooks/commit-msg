@@ -1,0 +1,32 @@
+#! /bin/bash
+
+# Check that your commit message is compliant to a required pattern
+# https://www.conventionalcommits.org/en/v1.0.0/#summary. The following is inspired from
+# https://dwmkerr.com/conventional-commits-and-semantic-versioning-for-java/
+
+# Color variables
+green='\033[0;32m'
+red='\033[0;31m'
+# Clear the color after that
+clear='\033[0m'
+echo -e "${green}Running commit-msg hook:${clear}"
+
+# Create a regex for a conventional commit.
+convetional_commit_regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-z \-]+\))?!?: .+$"
+
+# Get the commit message (the parameter we're given is just the path to the
+# temporary file which holds the message).
+commit_message=$(cat "$1")
+
+# Check if the message meets the standard.
+if [[ ! "$commit_message" =~ $convetional_commit_regex ]]; then
+   # Uh-oh, this is not a conventional commit, show an example and link to the spec.
+   echo -e "${red}The commit message does not meet the Conventional Commit standard${clear}"
+   echo "An example of a valid message is: "
+   echo "  feat(login): add the 'remember me' button"
+   echo "More details at: https://www.conventionalcommits.org/en/v1.0.0/#summary"
+   exit 1
+fi
+
+echo -e "${green}Commit message meets Conventional Commit standards...${clear}"
+exit 0
