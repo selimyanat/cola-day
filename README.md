@@ -24,12 +24,11 @@ The cola day application is a central web based application that meets the follo
 ## Requirements
 
  - Java 11
- - Maven 3.5
 
 ## Build
   
 ```  
-mvn clean package  
+./mvnw clean package  
 ```
 
 ## Run the application
@@ -42,7 +41,7 @@ Run the main class `Bootstrap`
 
 Open your terminal, navigate to the `cola-day` source directory then run the following command 
 ```
-mvnx spring-boot:run
+./mvnw spring-boot:run
 ```
 ### Java
 
