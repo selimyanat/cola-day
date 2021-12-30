@@ -1,0 +1,66 @@
+name: Tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: maven
+      - name: Build with Maven
+        run: ./mvnw --batch-mode --no-transfer-progress verify --update-snapshots
+
+  Jar:
+    name: Publish to Github package
+    runs-on: ubuntu-20.04
+    needs: [build]
+    env:
+      REPO: ${{ secrets.DOCKER_REPO }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: maven
+      - name: Build and publish Jar on GitHub Packages (jar version handled by jgit maven plugin)
+        run: ./mvnw -B clean deploy --no-transfer-progress -DskipTests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    name: Publish to Docker hub
+    runs-on: ubuntu-20.04
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: maven
+      - name: Build with Maven
+        run: ./mvnw clean install --no-transfer-progress -DskipTests
+      - name: Extract tag name in output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF:10}
+      - name: Build image and publish to Docker hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+          repository: selimyanat/coladay
+          tags: ${{steps.vars.outputs.tag}}
+          #tags: ${{github.run_number}}
