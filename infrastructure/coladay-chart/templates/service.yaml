@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "coladay-chart.fullname" . }}
+  labels:
+    {{- include "coladay-chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{.Values.service.debugPort }}
+      targetPort: http
+      protocol: TCP
+      name: debug
+  selector:
+    {{- include "coladay-chart.selectorLabels" . | nindent 4 }}
