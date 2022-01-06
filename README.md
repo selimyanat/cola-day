@@ -23,12 +23,16 @@ The cola day application is a central web based application that meets the follo
 
 ## Requirements
 
- - Java 11
+ - Java 11 or higher
+ - Docker
+ - A version of Kubernetes running locally: Docker for Desktop (Mac or Windows) with Kubernetes support; or MiniKube or K3s
+ - Kubernetes client
+ - Helm 3 or higher
 
 ## Build
   
 ```  
-./mvnw clean package  
+make build
 ```
 
 ## Run the application
@@ -41,19 +45,37 @@ Run the main class `Bootstrap`
 
 Open your terminal, navigate to the `cola-day` source directory then run the following command 
 ```
-./mvnw spring-boot:run
-```
-### Java
-
-Open your terminal, navigate to the `cola-day` source directory then run the following command
-```
-java -jar target\coladay-0.0.1-SNAPSHOT.jar
+make run-in-memory
 ```
 
+### Kubernetes
+
+Navigate to the `cola-day` source directory then:
+
+- Build the application by running the following command:
+```
+make build
+```
+
+- Create a kubernetes namespace by running the following command:
+```
+make create-kubernetes-namespace
+```
+- Deploy (or upgrade) the application to kubernetes by running the following command:
+```
+make deploy-to-kubernetes
+```
+- Expose the application outside kubernetes by using a port-forward with the following command:
+```
+export POD_NAME=$(kubectl get pods --namespace coladay -l "app.kubernetes.io/name=coladay-chart,app.kubernetes.io/instance=coladay" -o jsonpath="{.items[0].metadata.name}")
+export CONTAINER_PORT=$(kubectl get pod --namespace coladay $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+kubectl --namespace coladay port-forward $POD_NAME 8080:$CONTAINER_PORT 
+```
 
 ## Design
 
-The following section describes the key decisions and assumptions made to develop the application along with an overview of the technical environment.
+The following section describes the key decisions and assumptions made to develop the application 
+along with an overview of the technical environment.
 
 ### Assumptions
 
@@ -92,7 +114,7 @@ Coladay is a self contained application based on **Spring Boot** that runs an em
 
 ### Configuration
 
-The following list the available configuration keys:
+The following lists the available configuration keys:
 
 ```
 # Quota configuration  

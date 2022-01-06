@@ -12,6 +12,17 @@ clear='\033[0m'
 echo -e "${green}Running commit-msg hook:${clear}"
 
 # Create a regex for a conventional commit.
+#feat: for a new feature for the user, not a new feature for build script. Such commit will
+# trigger a release bumping a MINOR version.
+#fix: for a bug fix for the user, not a fix to a build script. Such commit will trigger a release
+# bumping a PATCH version.
+#perf: for performance improvements. Such commit will trigger a release bumping a PATCH version.
+#docs: for changes to the documentation.
+#style: for formatting changes, missing semicolons, etc.
+#refactor: for refactoring production code, e.g. renaming a variable.
+#test: for adding missing tests, refactoring tests; no production code change.
+#build: for updating build configuration, development tools or other changes irrelevant to the user.
+#chore: other changes that don't modify src or test files
 convetional_commit_regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-z \-]+\))?!?: .+$"
 
 # Get the commit message (the parameter we're given is just the path to the
