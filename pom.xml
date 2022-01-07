@@ -144,27 +144,6 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<!-- https://cloud.google.com/java/getting-started/jib   mvn compile jib:dockerBuild
-          https://www.javacodegeeks.com/2019/11/spring-boot-microservices-docker-and-kubernetes-workshop-part3.html
-        -->
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-				<version>${jib.maven.plugin}</version>
-				<configuration>
-					<from>
-						<image>gcr.io/distroless/java:11</image>
-					</from>
-					<to>
-						<image>sy/${project.artifactId}:${project.version}</image>
-					</to>
-					<container>
-						<ports>
-							<port>8080</port>
-						</ports>
-					</container>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.1.1</version>
