@@ -2,7 +2,15 @@ package com.sy.coladay.reservation;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,16 +33,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * ITest for auto generated reservation controller class.
  */
-@ExtendWith(SpringExtension.class)
-@AutoConfigureMockMvc
+@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
+@AutoConfigureMockMvc()
 @SpringBootTest(properties = {"coke.quota=2", "pepsi.quota=1"})
 @Transactional
 class ReservationControllerIT {
@@ -53,9 +65,15 @@ class ReservationControllerIT {
   User pepsiUser;
 
   @BeforeEach
-  void setUp() {
+  void setUp(WebApplicationContext webApplicationContext,
+             RestDocumentationContextProvider restDocumentation) {
+
     cokeUser = userRepository.findById(1L).get();
     pepsiUser = userRepository.findById(2L).get();
+    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                             .apply(documentationConfiguration(restDocumentation))
+                             .apply(springSecurity())
+                             .build();
   }
 
   @Test
@@ -80,7 +98,8 @@ class ReservationControllerIT {
            .andExpect(jsonPath("$._links.self", notNullValue()))
            .andExpect(jsonPath("$._links.reservation", notNullValue()))
            .andExpect(jsonPath("$._links.organizer", notNullValue()))
-           .andExpect(jsonPath("$._links.room", notNullValue()));
+           .andExpect(jsonPath("$._links.room", notNullValue()))
+           .andDo(document("create-a-reservation"));
   }
 
   @Test
@@ -148,7 +167,8 @@ class ReservationControllerIT {
                         .accept(MediaTypes.HAL_JSON_VALUE))
            .andDo(print())
            .andExpect(status().isConflict())
-           .andExpect(status().reason("Quota limit reached"));
+           .andExpect(status().reason("Quota limit reached"))
+           .andDo(document("create-a-reservation-quota-reached"));
   }
 
   @Test
@@ -176,7 +196,9 @@ class ReservationControllerIT {
            .andExpect(jsonPath("$.page.size", is(20)))
            .andExpect(jsonPath("$.page.totalElements", is(1)))
            .andExpect(jsonPath("$.page.totalPages", is(1)))
-           .andExpect(jsonPath("$.page.number", is(0)));
+           .andExpect(jsonPath("$.page.number", is(0)))
+           .andDo(document("get-all-reservations-by-page"));
+    ;
   }
 
   @Test
@@ -212,7 +234,8 @@ class ReservationControllerIT {
                         .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
                         .accept(MediaTypes.HAL_JSON_VALUE))
            .andDo(print())
-           .andExpect(status().isNoContent());
+           .andExpect(status().isNoContent())
+           .andDo(document("cancel-a-reservation"));
   }
 
   @Test

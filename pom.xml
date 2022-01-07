@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.2.RELEASE</version>
+		<version>2.1.9.RELEASE</version>
 		<relativePath/>
 	</parent>
 
@@ -24,6 +24,7 @@
 		<java.version>11</java.version>
 		<jib.maven.plugin>2.0.0</jib.maven.plugin>
 		<checkstyle.config.location>google_checks.xml</checkstyle.config.location>
+		<spring.restdocs.version>2.0.5.RELEASE</spring.restdocs.version>
 	</properties>
 
 	<distributionManagement>
@@ -78,6 +79,12 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.restdocs</groupId>
+			<artifactId>spring-restdocs-mockmvc</artifactId>
+<!--			<version>${spring.restdocs.version}</version>-->
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -194,6 +201,58 @@
 							<resources>
 								<resource>
 									<directory>git-hooks</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>1.5.8</version>
+				<executions>
+					<execution>
+						<id>generate-docs</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<backend>html</backend>
+							<doctype>book</doctype>
+							<logHandler>
+								<outputToConsole>true</outputToConsole>
+								<failIf>
+									<severity>DEBUG</severity>
+								</failIf>
+							</logHandler>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.restdocs</groupId>
+						<artifactId>spring-restdocs-asciidoctor</artifactId>
+						<version>2.0.5.RELEASE</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/generated-docs</directory>
 								</resource>
 							</resources>
 						</configuration>
