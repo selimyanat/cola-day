@@ -2,7 +2,10 @@ package com.sy.coladay.room;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -23,14 +26,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * ITest for auto generated room controller class.
  */
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
@@ -48,8 +55,14 @@ class RoomControllerIT {
   User cokeUser;
 
   @BeforeEach
-  void setUp() {
+  void setUp(WebApplicationContext webApplicationContext,
+             RestDocumentationContextProvider restDocumentation) {
+
     cokeUser = userRepository.findById(1L).get();
+    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                             .apply(documentationConfiguration(restDocumentation))
+                             .apply(springSecurity())
+                             .build();
   }
 
   @Test
@@ -105,7 +118,8 @@ class RoomControllerIT {
            .andExpect(jsonPath("$.page.size", is(1)))
            .andExpect(jsonPath("$.page.totalElements", is(20)))
            .andExpect(jsonPath("$.page.totalPages", is(20)))
-           .andExpect(jsonPath("$.page.number", is(0)));
+           .andExpect(jsonPath("$.page.number", is(0)))
+           .andDo(document("list-all-rooms"));
   }
 
   @Test

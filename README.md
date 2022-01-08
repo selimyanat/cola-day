@@ -74,38 +74,14 @@ kubectl --namespace coladay port-forward $POD_NAME 8080:$CONTAINER_PORT
 
 ## Design
 
-The following section describes the key decisions and assumptions made to develop the application 
-along with an overview of the technical environment.
-
-### Assumptions
-
-The application has been implemented around the following assumptions:
-
- - A room can be booked for one hour.
- - The available time slots to make a reservation are the following:
-	 - 8:00 am - 09:00 am
-	 - 09:00 am - 10:00 am
-	 - 10:00 am - 11:00 am
-	 - 11:00 am - 12:00 pm
-	 - 12:00 pm - 13:00 pm
-	 - 13:00 pm - 14:00 pm
-	 - 14:00 pm - 15:00 pm
-	 - 15:00 pm - 16:00 pm
-	 - 16:00 pm - 17:00 pm
-	 - 17:00 pm - 18:00 pm
- - There are 20 rooms.
- - According to the available time slots and the number of rooms there can be 200 reservations at most.
- - The rooms are pretty similar in term of size.
- - In order to strike fairness in terms of reservation numbers, both companies will be a given a configured quota  number that default  to 100 reservations. 
- -  Both companies, to ease the reservations process, had put in charge `user1` and `user2` resp for `COKE` and `PEPSI` . However the system is open to put more users.
-
-### Technical Environment
-
-Coladay is a self contained application based on **Spring Boot** that runs an embedded servlet container running by default on port 8080 that expose a **REST API**.  
+Coladay is a self-contained CRUD application based on **Spring Boot** that runs an embedded servlet 
+container running by default on port 8080 that expose a **REST API**. The following is a list of the
+most important libraries used to develop this application:
 
  - [Spring boot](https://spring.io/projects/spring-boot): Simple and rapid framework to create simple and web based applications.
  - [Spring data rest](https://projects.spring.io/spring-data-rest/): Spring library that analyzes the entity repositories and expose them as REST resources.
  - [Spring HATEOAS](https://spring.io/projects/spring-hateoas):  Spring library that allows to create REST representation that stick with the principle of HATEOAS *([Hypertext as the Engine of Application State](https://www.wikiwand.com/en/HATEOAS)*)
+ - [Spring restdocs](https://docs.spring.io/spring-restdocs/docs/2.0.0.RELEASE/reference/html5/#introduction): Spring library that allows to create api documentation out of tests.
  - [H2](http://www.h2database.com/html/main.html): a lightweight relational database.
  - [lombok](https://projectlombok.org/) : Framework auto generating code for java (getter, setter, ...).
  - [vavr](http://www.vavr.io): Functional library for java.
