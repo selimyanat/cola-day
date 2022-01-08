@@ -17,3 +17,10 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: ./mvnw --batch-mode --no-transfer-progress verify --update-snapshots
+      - name: Publish api documentation
+        uses: JamesIves/github-pages-deploy-action@4.2.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          CLEAN: true
+          FOLDER: target/generated-docs

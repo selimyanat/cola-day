@@ -18,3 +18,4 @@
             cache: maven
         - name: Build and Test
           run: ./mvnw --batch-mode --no-transfer-progress verify --update-snapshots verify
+
