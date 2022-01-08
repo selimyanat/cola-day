@@ -53,8 +53,7 @@ COKE and PEPSI . However the system is open to put more users.
 == HTTP verbs
 
 Coladay application tries to adhere as closely as possible to standard HTTP and REST conventions in
-its
-use of HTTP verbs.
+its use of HTTP verbs.
 
 |===
 | Verb | Usage
