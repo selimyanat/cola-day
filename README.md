@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The cola day application is a central web based application that meets the following business problem: 
+The cola day application is a CRUD application that meets the following business problem: 
 
 > Two companies, COKE and PEPSI, are sharing an office building. Tomorrow is COLA day (for one day), that the two companies are celebrating.  They are hosting a number of business partners in the building.
 > 
@@ -88,27 +88,6 @@ most important libraries used to develop this application:
  - [Junit 5](https://junit.org/junit5/): The next generation of testing framework for java.
  - [AssertionsJ](http://joel-costigliola.github.io/assertj/): Fluent assertions for java.
 
-### Configuration
-
-The following lists the available configuration keys:
-
-```
-# Quota configuration  
-coke.quota= 100  
-pepsi.quota= 100  
-
-# Database settings 
-spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;Mode=MYSQL  
-spring.datasource.username=sa  
-spring.datasource.password=  
-spring.datasource.driver-class-name=org.h2.Driver  
-# Let hibernate generate the DDL schema  
-spring.jpa.hibernate.ddl-auto=create-drop  
-
-  # Log configuration  
-logging.level.com.coladay=DEBUG
-```
-
-## Features
+## API
 
 Visit the API documentation [here](https://selimyanat.github.io/cola-day/) !
