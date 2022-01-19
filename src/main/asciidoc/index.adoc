@@ -147,3 +147,14 @@ operation::cancel-a-reservation[snippets='curl-request,http-request,http-respons
 A `GET` request is used to list all rooms and their availabilities.
 
 operation::list-all-rooms[snippets='curl-request,http-request,http-response']
+
+
+[[resources_user]]
+== User
+
+[[resources_list_users]]
+=== List users
+
+A `GET` request is used to list all users.
+
+operation::list-all-users[snippets='curl-request,http-request,http-response']

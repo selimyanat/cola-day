@@ -82,11 +82,12 @@ most important libraries used to develop this application:
  - [Spring data rest](https://projects.spring.io/spring-data-rest/): Spring library that analyzes the entity repositories and expose them as REST resources.
  - [Spring HATEOAS](https://spring.io/projects/spring-hateoas):  Spring library that allows to create REST representation that stick with the principle of HATEOAS *([Hypertext as the Engine of Application State](https://www.wikiwand.com/en/HATEOAS)*)
  - [Spring restdocs](https://docs.spring.io/spring-restdocs/docs/2.0.0.RELEASE/reference/html5/#introduction): Spring library that allows to create api documentation out of tests.
- - [H2](http://www.h2database.com/html/main.html): a lightweight relational database.
+ - [PostgreSQL](https://www.postgresql.org/): PostgreSQL is a powerful, open source object-relational database system.
  - [lombok](https://projectlombok.org/) : Framework auto generating code for java (getter, setter, ...).
  - [vavr](http://www.vavr.io): Functional library for java.
  - [Junit 5](https://junit.org/junit5/): The next generation of testing framework for java.
  - [AssertionsJ](http://joel-costigliola.github.io/assertj/): Fluent assertions for java.
+ - [Test Containers](https://www.testcontainers.org/): A library for integration testing against docker containers from within Rust 
 
 ## API
 
