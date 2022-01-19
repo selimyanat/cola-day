@@ -14,33 +14,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sy.coladay.common.ITConfig;
 import com.sy.coladay.user.User;
 import com.sy.coladay.user.UserRepository;
 import java.util.Collections;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
  * ITest for auto generated room controller class.
  */
-@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@AutoConfigureMockMvc
-@Transactional
 @SpringBootTest
+@ITConfig
 class RoomControllerIT {
 
   @Autowired
@@ -58,7 +52,7 @@ class RoomControllerIT {
   void setUp(WebApplicationContext webApplicationContext,
              RestDocumentationContextProvider restDocumentation) {
 
-    cokeUser = userRepository.findById(1L).get();
+    cokeUser = userRepository.findByName("user1").get();
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                              .apply(documentationConfiguration(restDocumentation))
                              .apply(springSecurity())

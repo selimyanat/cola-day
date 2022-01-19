@@ -2,7 +2,9 @@ package com.sy.coladay.user;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sy.coladay.common.ITConfig;
 import java.util.Collections;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,14 +24,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
-@ExtendWith(SpringExtension.class)
-@AutoConfigureMockMvc
-@Transactional
 @SpringBootTest
+@ITConfig
 class UserControllerIT {
 
   @Autowired
@@ -43,8 +47,14 @@ class UserControllerIT {
   User cokeUser;
 
   @BeforeEach
-  public void setUp() {
-    cokeUser = userRepository.findById(1L).get();
+  public void setUp(WebApplicationContext webApplicationContext,
+                    RestDocumentationContextProvider restDocumentation) {
+
+    cokeUser = userRepository.findByName("user1").get();
+    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                             .apply(documentationConfiguration(restDocumentation))
+                             .apply(springSecurity())
+                             .build();
   }
 
   @Test

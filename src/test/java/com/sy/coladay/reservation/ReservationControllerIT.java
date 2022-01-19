@@ -2,14 +2,9 @@ package com.sy.coladay.reservation;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,6 +15,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sy.coladay.common.ITConfig;
+import com.sy.coladay.common.PostgreSQLExtension;
 import com.sy.coladay.user.User;
 import com.sy.coladay.user.UserRepository;
 import java.util.HashMap;
@@ -29,26 +26,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
  * ITest for auto generated reservation controller class.
  */
-@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@AutoConfigureMockMvc()
 @SpringBootTest(properties = {"coke.quota=2", "pepsi.quota=1"})
-@Transactional
+@ITConfig
 class ReservationControllerIT {
 
   @Autowired
@@ -68,8 +60,8 @@ class ReservationControllerIT {
   void setUp(WebApplicationContext webApplicationContext,
              RestDocumentationContextProvider restDocumentation) {
 
-    cokeUser = userRepository.findById(1L).get();
-    pepsiUser = userRepository.findById(2L).get();
+    cokeUser = userRepository.findByName("user1").get();
+    pepsiUser = userRepository.findByName("user2").get();
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                              .apply(documentationConfiguration(restDocumentation))
                              .apply(springSecurity())
@@ -78,7 +70,6 @@ class ReservationControllerIT {
 
   @Test
   @SneakyThrows
-  @DirtiesContext
   void postReservation_return_201() {
 
     final Map<String, String> reservation = new HashMap<>();
@@ -122,7 +113,6 @@ class ReservationControllerIT {
 
   @Test
   @SneakyThrows
-  @DirtiesContext
   void postReservation_busySchedule_return_409() {
 
     final Map<String, String> reservationOnBusySchedule = new HashMap<>();
@@ -141,7 +131,6 @@ class ReservationControllerIT {
 
   @Test
   @SneakyThrows
-  @DirtiesContext
   void postReservation_quotaReached_return_409() {
 
     final Map<String, String> firstReservation = new HashMap<>();
@@ -227,10 +216,9 @@ class ReservationControllerIT {
 
   @Test
   @SneakyThrows
-  @DirtiesContext
   void cancelReservation_return_204() {
 
-    mockMvc.perform(delete("/reservations/{id}", 1)
+    mockMvc.perform(delete("/reservations/{id}", 10000)
                         .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
                         .accept(MediaTypes.HAL_JSON_VALUE))
            .andDo(print())
@@ -242,7 +230,7 @@ class ReservationControllerIT {
   @SneakyThrows
   void cancelReservation_ofAnotherUser_return_403() {
 
-    mockMvc.perform(delete("/reservations/{id}", 1)
+    mockMvc.perform(delete("/reservations/{id}", 10000)
                         .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
                         .accept(MediaTypes.HAL_JSON_VALUE))
            .andDo(print())
