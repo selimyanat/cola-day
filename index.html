@@ -705,7 +705,7 @@ Content-Length: 50
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/reservations/2
+Location: http://localhost:8080/reservations/1
 Content-Type: application/hal+json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -719,16 +719,16 @@ Content-Length: 388
   "timeSlot" : "NINE_AM_TO_TEN_AM",
   "_links" : {
     "self" : {
-      "href" : "http://localhost:8080/reservations/2"
+      "href" : "http://localhost:8080/reservations/1"
     },
     "reservation" : {
-      "href" : "http://localhost:8080/reservations/2"
+      "href" : "http://localhost:8080/reservations/1"
     },
     "organizer" : {
-      "href" : "http://localhost:8080/reservations/2/organizer"
+      "href" : "http://localhost:8080/reservations/1/organizer"
     },
     "room" : {
-      "href" : "http://localhost:8080/reservations/2/room"
+      "href" : "http://localhost:8080/reservations/1/room"
     }
   }
 }</code></pre>
@@ -773,7 +773,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 908
+Content-Length: 924
 
 {
   "_embedded" : {
@@ -781,16 +781,16 @@ Content-Length: 908
       "timeSlot" : "EIGHT_AM_TO_NINE_AM",
       "_links" : {
         "self" : {
-          "href" : "http://localhost:8080/reservations/1"
+          "href" : "http://localhost:8080/reservations/10000"
         },
         "reservation" : {
-          "href" : "http://localhost:8080/reservations/1"
-        },
-        "organizer" : {
-          "href" : "http://localhost:8080/reservations/1/organizer"
+          "href" : "http://localhost:8080/reservations/10000"
         },
         "room" : {
-          "href" : "http://localhost:8080/reservations/1/room"
+          "href" : "http://localhost:8080/reservations/10000/room"
+        },
+        "organizer" : {
+          "href" : "http://localhost:8080/reservations/10000/organizer"
         }
       }
     } ]
@@ -827,7 +827,7 @@ Content-Length: 908
 <h4 id="_cancel_a_reservation_curl_request"><a class="link" href="#_cancel_a_reservation_curl_request">Curl request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/reservations/1' -i -u 'user1:password1' -X DELETE \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/reservations/10000' -i -u 'user1:password1' -X DELETE \
     -H 'Accept: application/hal+json'</code></pre>
 </div>
 </div>
@@ -836,7 +836,7 @@ Content-Length: 908
 <h4 id="_cancel_a_reservation_http_request"><a class="link" href="#_cancel_a_reservation_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /reservations/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /reservations/10000 HTTP/1.1
 Accept: application/hal+json
 Authorization: Basic dXNlcjE6cGFzc3dvcmQx
 Host: localhost:8080</code></pre>
@@ -954,7 +954,7 @@ Content-Length: 934
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-08 19:53:18 UTC
+Last updated 2022-01-19 11:21:08 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
