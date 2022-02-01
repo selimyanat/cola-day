@@ -25,46 +25,31 @@ The cola day application is a CRUD application that meets the following business
 
  - Java 11 or higher
  - Docker
- - A version of Kubernetes running locally: Docker for Desktop (Mac or Windows) with Kubernetes support; or MiniKube or K3s
- - Kubernetes client
- - Helm 3 or higher
+ - Docker compose
+ - A version of Kubernetes running locally: Docker for Desktop (Mac or Windows) with Kubernetes support; or MiniKube or K3s (optional)
+ - Kubernetes client (optional: for kubernetes deployment only)
+ - Helm 3 or higher (optional: for kubernetes deployment only)
 
-## Build
-  
-```  
-make build
-```
 
 ## Run the application
 
-###  IDE
+### Docker-Compose
 
-Run the main class `Bootstrap`
+Navigate to the `cola-day` source directory then issue the following command:
 
-###  Maven
-
-Open your terminal, navigate to the `cola-day` source directory then run the following command 
 ```
-make run-in-memory
+make run-in-docker-compose
 ```
 
 ### Kubernetes
 
 Navigate to the `cola-day` source directory then:
 
-- Build the application by running the following command:
-```
-make build
-```
-
-- Create a kubernetes namespace by running the following command:
-```
-make create-kubernetes-namespace
-```
 - Deploy (or upgrade) the application to kubernetes by running the following command:
 ```
 make deploy-to-kubernetes
 ```
+
 - Expose the application outside kubernetes by using a port-forward with the following command:
 ```
 export POD_NAME=$(kubectl get pods --namespace coladay -l "app.kubernetes.io/name=coladay-chart,app.kubernetes.io/instance=coladay" -o jsonpath="{.items[0].metadata.name}")
@@ -83,6 +68,7 @@ most important libraries used to develop this application:
  - [Spring HATEOAS](https://spring.io/projects/spring-hateoas):  Spring library that allows to create REST representation that stick with the principle of HATEOAS *([Hypertext as the Engine of Application State](https://www.wikiwand.com/en/HATEOAS)*)
  - [Spring restdocs](https://docs.spring.io/spring-restdocs/docs/2.0.0.RELEASE/reference/html5/#introduction): Spring library that allows to create api documentation out of tests.
  - [PostgreSQL](https://www.postgresql.org/): PostgreSQL is a powerful, open source object-relational database system.
+ - [Liquidbase](https://liquibase.org/): Liquibase is an open-source database-independent library for tracking, managing and applying database schema changes. 
  - [lombok](https://projectlombok.org/) : Framework auto generating code for java (getter, setter, ...).
  - [vavr](http://www.vavr.io): Functional library for java.
  - [Junit 5](https://junit.org/junit5/): The next generation of testing framework for java.
