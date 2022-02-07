@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd"
+  objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+  <changeSet id="load-initial-users" author="selim" >
+    <insert tableName="users" >
+      <column name="name" value="user1"/>
+      <column name="password" value="password1"/>
+      <column name="company" value="COKE"/>
+      <column name="role" value="USER"/>
+    </insert>
+    <insert tableName="users" >
+      <column name="name" value="user2"/>
+      <column name="password" value="password2"/>
+      <column name="company" value="PEPSI"/>
+      <column name="role" value="USER"/>
+    </insert>
+  </changeSet>
+
+  <changeSet id="load-initial-rooms" author="selim">
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R01"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R02"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R03"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R04"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R05"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R06"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R07"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R08"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R09"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="COKE_R10"/>
+      <column name="owner" value="COKE"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R01"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R02"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R03"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R04"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R05"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R06"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R07"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R08"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R09"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+    <insert tableName="rooms" >
+      <column name="name" value="PEPSI_R10"/>
+      <column name="owner" value="PEPSI"/>
+    </insert>
+  </changeSet>
+</databaseChangeLog>

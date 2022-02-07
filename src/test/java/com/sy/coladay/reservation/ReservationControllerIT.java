@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sy.coladay.common.ITConfig;
-import com.sy.coladay.common.PostgreSQLExtension;
 import com.sy.coladay.user.User;
 import com.sy.coladay.user.UserRepository;
 import java.util.HashMap;
@@ -24,14 +23,12 @@ import java.util.Map;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -41,6 +38,7 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @SpringBootTest(properties = {"coke.quota=2", "pepsi.quota=1"})
 @ITConfig
+@Sql(value = "/reservations-fixtures.sql")
 class ReservationControllerIT {
 
   @Autowired
@@ -55,6 +53,10 @@ class ReservationControllerIT {
   User cokeUser;
 
   User pepsiUser;
+//
+//  @Autowired
+//  private DataSource dataSource;
+
 
   @BeforeEach
   void setUp(WebApplicationContext webApplicationContext,
@@ -67,6 +69,14 @@ class ReservationControllerIT {
                              .apply(springSecurity())
                              .build();
   }
+
+//  @Test
+//  @SneakyThrows
+//  void check_liquidbase_migration() {
+//    // It uses the public schema
+//    Assert.assertEquals(dataSource.getConnection().getMetaData().getURL(), "coladay");
+//    Assert.assertEquals(dataSource.getConnection().getSchema(), "coladay");
+//  }
 
   @Test
   @SneakyThrows
@@ -131,6 +141,36 @@ class ReservationControllerIT {
 
   @Test
   @SneakyThrows
+  void getReservations_return_200() {
+
+    mockMvc.perform(get("/reservations")
+                        .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
+                        .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$._embedded.reservations[0].timeSlot",
+                               is("EIGHT_AM_TO_NINE_AM")
+           ))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.length()", is(4)))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.self", notNullValue()))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.reservation", notNullValue()))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.organizer", notNullValue()))
+           .andExpect(jsonPath("$._embedded.reservations[0]._links.room", notNullValue()))
+           .andExpect(jsonPath("$._links.length()", is(3)))
+           .andExpect(jsonPath("$._links.self", notNullValue()))
+           .andExpect(jsonPath("$._links.profile", notNullValue()))
+           .andExpect(jsonPath("$._links.search", notNullValue()))
+           .andExpect(jsonPath("$.page", notNullValue()))
+           .andExpect(jsonPath("$.page.size", is(20)))
+           .andExpect(jsonPath("$.page.totalElements", is(1)))
+           .andExpect(jsonPath("$.page.totalPages", is(1)))
+           .andExpect(jsonPath("$.page.number", is(0)))
+           .andDo(document("get-all-reservations-by-page"));
+    ;
+  }
+
+  @Test
+  @SneakyThrows
   void postReservation_quotaReached_return_409() {
 
     final Map<String, String> firstReservation = new HashMap<>();
@@ -158,36 +198,6 @@ class ReservationControllerIT {
            .andExpect(status().isConflict())
            .andExpect(status().reason("Quota limit reached"))
            .andDo(document("create-a-reservation-quota-reached"));
-  }
-
-  @Test
-  @SneakyThrows
-  void getReservations_return_200() {
-
-    mockMvc.perform(get("/reservations")
-                        .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
-                        .accept(MediaTypes.HAL_JSON_VALUE))
-           .andDo(print())
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$._embedded.reservations[0].timeSlot",
-                               is("EIGHT_AM_TO_NINE_AM")
-           ))
-           .andExpect(jsonPath("$._embedded.reservations[0]._links.length()", is(4)))
-           .andExpect(jsonPath("$._embedded.reservations[0]._links.self", notNullValue()))
-           .andExpect(jsonPath("$._embedded.reservations[0]._links.reservation", notNullValue()))
-           .andExpect(jsonPath("$._embedded.reservations[0]._links.organizer", notNullValue()))
-           .andExpect(jsonPath("$._embedded.reservations[0]._links.room", notNullValue()))
-           .andExpect(jsonPath("$._links.length()", is(3)))
-           .andExpect(jsonPath("$._links.self", notNullValue()))
-           .andExpect(jsonPath("$._links.profile", notNullValue()))
-           .andExpect(jsonPath("$._links.search", notNullValue()))
-           .andExpect(jsonPath("$.page", notNullValue()))
-           .andExpect(jsonPath("$.page.size", is(20)))
-           .andExpect(jsonPath("$.page.totalElements", is(1)))
-           .andExpect(jsonPath("$.page.totalPages", is(1)))
-           .andExpect(jsonPath("$.page.number", is(0)))
-           .andDo(document("get-all-reservations-by-page"));
-    ;
   }
 
   @Test

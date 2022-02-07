@@ -63,4 +63,3 @@ jobs:
           password: ${{ secrets.DOCKER_PASS }}
           repository: selimyanat/coladay
           tags: ${{steps.vars.outputs.tag}}
-          #tags: ${{github.run_number}}

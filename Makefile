@@ -1,20 +1,21 @@
 ## Makefile for coladay application
 SHELL=/bin/bash
 
-build:
-	echo 'Building application...'
-	./mvnw clean verify
+build-docker-file:
+	echo 'Building docker file...'
+	./mvnw clean verify -DskipTests
 	docker build --tag selimyanat/coladay:latest .
 
-run-in-memory:
-	echo 'Starting application ...'
-	./mvnw spring-boot:run
+run-in-docker-compose: build-docker-file
+	echo 'Running application in docker-compose...'
+	docker-compose down
+	docker-compose up
 
-create-kubernetes-namespace:
+create-kubernetes-namespace: build-docker-file
 	echo 'Creating Kubernetes namespace'
 	kubectl create namespace coladay
 
-deploy-to-kubernetes:
+deploy-to-kubernetes: create-kubernetes-namespace
 	echo 'Installing in kubernetes'
 	kubectl config use-context docker-desktop
 	helm lint ./infrastructure/coladay-chart
