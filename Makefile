@@ -11,12 +11,13 @@ run-in-docker-compose: build-docker-file
 	docker-compose down
 	docker-compose up
 
-create-kubernetes-namespace: build-docker-file
-	echo 'Creating Kubernetes namespace'
-	kubectl create namespace coladay
+create-kubernetes-namespace:
+	echo 'Creating Kubernetes namespace if not exists...'
+	kubectl config use-context docker-desktop
+	kubectl get namespace | grep -q "^coladay" || kubectl create namespace coladay
 
 deploy-to-kubernetes: create-kubernetes-namespace
-	echo 'Installing in kubernetes'
+	echo 'Deploying coladay in kubernetes...'
 	kubectl config use-context docker-desktop
 	helm lint ./infrastructure/coladay-chart
 	helm upgrade --values ./infrastructure/coladay-chart/values.yaml coladay \
