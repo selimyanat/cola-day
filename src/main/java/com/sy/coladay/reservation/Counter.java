@@ -5,11 +5,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 class Counter {
 
-  private volatile int offset;
-
   private final int limit;
-
   private final Lock lock;
+  private volatile int offset;
 
   Counter(int limit) {
     this(0, limit);

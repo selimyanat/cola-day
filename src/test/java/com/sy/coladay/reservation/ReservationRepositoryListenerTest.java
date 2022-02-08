@@ -68,7 +68,8 @@ class ReservationRepositoryListenerTest {
         .handleReservationBeforeDelete(reservation))
         .isInstanceOf(ReservationCancellationForbiddenException.class)
         .hasMessage("User %s is not allowed to delete this reservation %d",
-            aUser.getName(),
-            reservation.getId());
+                    aUser.getName(),
+                    reservation.getId()
+        );
   }
 }

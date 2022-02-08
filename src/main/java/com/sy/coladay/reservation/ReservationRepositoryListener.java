@@ -27,15 +27,15 @@ class ReservationRepositoryListener {
   /**
    * Augment the reservation with the <code>Principal</code> being authenticated.
    *
-   * @param reservation
-   *     the reservation to create
+   * @param reservation the reservation to create
    */
   @HandleBeforeCreate
   @SuppressWarnings("unused")
   void handleReservationBeforeCreate(Reservation reservation) {
     final User authenticatedUser = getAuthenticatedUser();
     LOG.debug("Augmenting reservation with organizer {} from security context ",
-        authenticatedUser.getName());
+              authenticatedUser.getName()
+    );
     reservation.setOrganizer(authenticatedUser);
   }
 
@@ -43,8 +43,7 @@ class ReservationRepositoryListener {
    * Assert that the <code>Principal</code> being authenticated is the reservation owner to allow
    * the reservation deletion.
    *
-   * @param reservation
-   *     the reservation to delete
+   * @param reservation the reservation to delete
    */
   @HandleBeforeDelete
   @SuppressWarnings("unused")
@@ -54,12 +53,13 @@ class ReservationRepositoryListener {
     if (isDeletionAllowed.negate().test(authenticatedUser)) {
       LOG.info("Reservation {} deletion is forbidden for user {}. Reservation can only be deleted "
                    + "by its owner",
-          reservation.getId(),
-          authenticatedUser
+               reservation.getId(),
+               authenticatedUser
       );
       throw new ReservationCancellationForbiddenException(
           format("User %s is not allowed to delete this reservation %d",
-              authenticatedUser.getName(), reservation.getId()));
+                 authenticatedUser.getName(), reservation.getId()
+          ));
     }
   }
 

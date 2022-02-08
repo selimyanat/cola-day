@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 /**
  * Represents a room with its core attributes.
  *
- * @author  selim
+ * @author selim
  */
 @AllArgsConstructor
 @NoArgsConstructor

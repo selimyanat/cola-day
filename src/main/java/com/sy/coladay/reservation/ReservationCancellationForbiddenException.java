@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ReservationCancellationForbiddenException extends RuntimeException {
 
   /**
-   * Creates a new instance of <code>ReservationCancellationForbiddenException</code> with a
-   * detail message.
+   * Creates a new instance of <code>ReservationCancellationForbiddenException</code> with a detail
+   * message.
    *
-   * @param message
-   *     the detailed message
+   * @param message the detailed message
    */
   public ReservationCancellationForbiddenException(String message) {
     super(message);

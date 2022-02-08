@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Boot loader of the cola application.
+ *
  * @author selim
  */
 @SpringBootApplication
@@ -20,7 +21,7 @@ public class Bootstrap {
       initializer.initApplication();
       return;
     }
-    if ("true".equalsIgnoreCase(getenv("ENABLE_COLADAY_LOCAL_DEV"))){
+    if ("true".equalsIgnoreCase(getenv("ENABLE_COLADAY_LOCAL_DEV"))) {
       var initializer = new ApplicationInitializer();
       initializer.initApplication();
       SpringApplication.run(Bootstrap.class, args);
@@ -28,8 +29,6 @@ public class Bootstrap {
     }
     SpringApplication.run(Bootstrap.class, args);
   }
-
-
 
 
 }

@@ -67,7 +67,8 @@ class QuotaServiceTest {
     assertAll(
         () -> assertThat(underTest.interceptSaveOperation(proceedingJoinPoint))
             .isSameAs(reservation),
-        () ->  assertThat(counter.getOffset()).isEqualTo(1));
+        () -> assertThat(counter.getOffset()).isEqualTo(1)
+    );
   }
 
   @ParameterizedTest
@@ -84,7 +85,7 @@ class QuotaServiceTest {
     assertThatThrownBy(() -> underTest.interceptSaveOperation(proceedingJoinPoint))
         .isInstanceOf(QuotaLimitReachedException.class)
         .hasMessage("Reservation for %s company cannot be created because the quota limit is "
-            + "already reached.", company);
+                        + "already reached.", company);
     assertThat(counter.getOffset()).isEqualTo(2);
   }
 

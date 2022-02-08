@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Retrieve the <code>UserDetails</code> out of database.
+ *
  * @author selim
  */
 @Service

@@ -19,7 +19,8 @@ class CounterTest {
 
     assertAll(
         () -> assertThat(underTest.increment()).isTrue(),
-        () -> assertThat(underTest.getOffset()).isEqualTo(1));
+        () -> assertThat(underTest.getOffset()).isEqualTo(1)
+    );
   }
 
   @Test
@@ -29,7 +30,8 @@ class CounterTest {
 
     assertAll(
         () -> assertThat(underTest.increment()).isFalse(),
-        () -> assertThat(underTest.getOffset()).isEqualTo(2));
+        () -> assertThat(underTest.getOffset()).isEqualTo(2)
+    );
   }
 
   @Test
@@ -38,7 +40,8 @@ class CounterTest {
 
     assertAll(
         () -> assertThat(underTest.decrement()).isTrue(),
-        () -> assertThat(underTest.getOffset()).isEqualTo(0));
+        () -> assertThat(underTest.getOffset()).isEqualTo(0)
+    );
   }
 
   @Test
@@ -47,7 +50,8 @@ class CounterTest {
 
     assertAll(
         () -> assertThat(underTest.decrement()).isFalse(),
-        () -> assertThat(underTest.getOffset()).isEqualTo(0));
+        () -> assertThat(underTest.getOffset()).isEqualTo(0)
+    );
   }
 
 }

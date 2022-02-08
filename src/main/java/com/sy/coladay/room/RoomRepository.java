@@ -6,6 +6,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
  * Repository backing the <code>Room</code>.entity.
+ *
  * @author selim
  */
 

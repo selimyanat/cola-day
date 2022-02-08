@@ -17,9 +17,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Simple security configuration to secure the application. The mechanism used in here like
- * http basic, no password encoder are used to keep the demo simple. They are are not intended for
- * usage in real life scenario.
+ * Simple security configuration to secure the application. The mechanism used in here like http
+ * basic, no password encoder are used to keep the demo simple. They are are not intended for usage
+ * in real life scenario.
  *
  * @author selim
  */

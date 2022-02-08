@@ -12,13 +12,14 @@ public class ApplicationInitializer {
   private void createDatabaseIfNotExists() {
 
     var task = new CreateDatabaseTask();
-    task.exec();;
+    task.exec();
+    ;
   }
 
-    private void createSchemaIfNotExists() {
+  private void createSchemaIfNotExists() {
 
-      var task = new CreateSchemaTask();
-      task.exec();
+    var task = new CreateSchemaTask();
+    task.exec();
   }
 
   private void runDatabaseMigration() {

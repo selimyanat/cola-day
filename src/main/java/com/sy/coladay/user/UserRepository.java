@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Repository backing the <code>User</code>.entity.
+ *
  * @author selim
  */
 @Repository

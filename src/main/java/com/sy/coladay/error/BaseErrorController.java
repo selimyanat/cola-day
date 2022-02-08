@@ -22,6 +22,7 @@ public class BaseErrorController {
   @SneakyThrows
   void handleDataIntegrityViolationException(HttpServletResponse res) {
     res.sendError(HttpStatus.CONFLICT.value(),
-        "The data presented are in conflict with existing ones");
+                  "The data presented are in conflict with existing ones"
+    );
   }
 }

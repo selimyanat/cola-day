@@ -12,8 +12,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
- * Extension that starts a PostgreSQL instance before all tests in our test class, configures
- * Spring Boot, and stops the PostgreSQL instance after running tests.
+ * Extension that starts a PostgreSQL instance before all tests in our test class, configures Spring
+ * Boot, and stops the PostgreSQL instance after running tests.
  */
 public class PostgreSQLExtension implements BeforeAllCallback, AfterAllCallback {
 
@@ -34,13 +34,15 @@ public class PostgreSQLExtension implements BeforeAllCallback, AfterAllCallback 
         "jdbc:postgresql://" +
             postgres.getContainerIpAddress() +
             ":" +
-            postgres.getMappedPort(POSTGRESQL_PORT) ;
+            postgres.getMappedPort(POSTGRESQL_PORT);
     var createDatabaseTask = new CreateDatabaseTask(
         dbBaseUrl + "/postgres",
         postgres.getUsername(),
         postgres.getPassword(),
-        "coladay");
-    createDatabaseTask.exec();;
+        "coladay"
+    );
+    createDatabaseTask.exec();
+    ;
     var createSchemaTask = new CreateSchemaTask(
         dbBaseUrl + "/coladay",
         postgres.getUsername(),

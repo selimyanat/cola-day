@@ -2,7 +2,6 @@ package com.sy.coladay.init;
 
 import static java.lang.System.getenv;
 
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,8 @@ public class CreateSchemaTask implements Task {
     this(getenv("COLADAY_DB_URL"),
          getenv("COLADAY_DB_USER"),
          getenv("COLADAY_DB_USER_PASSWORD"),
-         getenv("COLADAY_DB_SCHEMA"));
+         getenv("COLADAY_DB_SCHEMA")
+    );
   }
 
   public void exec() {
@@ -40,7 +40,7 @@ public class CreateSchemaTask implements Task {
       dataSource.setUsername(dbUser);
       dataSource.setPassword(dbUserPassword);
       var jdbcTemplate = new JdbcTemplate(dataSource);
-      var createSchemaIfNotExists = "CREATE SCHEMA IF NOT EXISTS "+dbSchema;
+      var createSchemaIfNotExists = "CREATE SCHEMA IF NOT EXISTS " + dbSchema;
       jdbcTemplate.execute(createSchemaIfNotExists);
     } catch (Throwable throwable) {
       throw new RuntimeException(throwable);

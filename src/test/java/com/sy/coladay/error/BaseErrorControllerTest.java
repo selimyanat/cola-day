@@ -29,6 +29,7 @@ class BaseErrorControllerTest {
 
     baseErrorController.handleDataIntegrityViolationException(response);
     verify(response).sendError(HttpStatus.CONFLICT.value(),
-        "The data presented are in conflict with existing ones");
+                               "The data presented are in conflict with existing ones"
+    );
   }
 }

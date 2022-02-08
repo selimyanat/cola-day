@@ -22,8 +22,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * The quota service is a component with the objective to ration how many reservation are created
- * by both companies coke and pepsi.
+ * The quota service is a component with the objective to ration how many reservation are created by
+ * both companies coke and pepsi.
  *
  * <p>The service sits on top of the underlying spring data rest repository that handles the
  * creation and deletion of reservations.
@@ -47,18 +47,14 @@ class QuotaService {
   private final Counter pepsiCounter;
 
   /**
-   * Creates a new instance of <code>QuotaService</code> .
-   * .
+   * Creates a new instance of <code>QuotaService</code> . .
    *
-   * @param meetingRepository
-   *     the meeting repository used to initialize the counters offsets.
-   * @param pepsiQuota
-   *     the initial reservation quota of pepsi
-   * @param cokeQuota
-   *     the initial reservation quota of coke
+   * @param meetingRepository the meeting repository used to initialize the counters offsets.
+   * @param pepsiQuota the initial reservation quota of pepsi
+   * @param cokeQuota the initial reservation quota of coke
    */
   QuotaService(ReservationRepository meetingRepository,
-      @Value("${pepsi.quota}") int pepsiQuota, @Value("${coke.quota}") int cokeQuota) {
+               @Value("${pepsi.quota}") int pepsiQuota, @Value("${coke.quota}") int cokeQuota) {
     this.reservationRepository = meetingRepository;
     this.cokeCounter = new Counter(
         meetingRepository.countByOrganizerCompany(Companies.COKE).intValue(), cokeQuota);
@@ -68,15 +64,13 @@ class QuotaService {
 
   /**
    * Assert that the reservations quota is not reached then delegates the reservation creation and
-   * finally increment the reservation counter.
-   * Otherwise abort the reservation creation by throwing a <code>QuotaLimitReachedException</code>
+   * finally increment the reservation counter. Otherwise abort the reservation creation by throwing
+   * a <code>QuotaLimitReachedException</code>
    *
-   * @param pjp
-   *     the joint point
+   * @param pjp the joint point
    * @return the reservation created
-   * @throws Throwable
-   *     if the reservations quota is reached or if the reservation creation has
-   *     failed.
+   * @throws Throwable if the reservations quota is reached or if the reservation creation has
+   * failed.
    */
   @Around("execution(*  ReservationRepository.save(..))")
   Reservation interceptSaveOperation(final ProceedingJoinPoint pjp) throws Throwable {
@@ -87,24 +81,26 @@ class QuotaService {
     final Predicate<Reservation> isQuotaLimitReached = meeting1 -> counter.increment();
     if (isQuotaLimitReached.negate().test(reservation)) {
       throw new QuotaLimitReachedException(format("Reservation for %s company cannot be created "
-              + "because the quota limit is already reached.",
-          reservation.getOrganizer().getCompany()));
+                                                      + "because the quota limit is already reached.",
+                                                  reservation.getOrganizer().getCompany()
+      ));
     }
 
     return (Reservation) Try.of(() -> pjp.proceed(pjp.getArgs()))
-        .onFailure(throwable -> {
-          LOG.info("Could not create reservation for {} ", reservation.getOrganizer().getCompany());
-          counter.decrement();
-        })
-        .getOrElseThrow(throwable -> throwable);
+                            .onFailure(throwable -> {
+                              LOG.info("Could not create reservation for {} ",
+                                       reservation.getOrganizer().getCompany()
+                              );
+                              counter.decrement();
+                            })
+                            .getOrElseThrow(throwable -> throwable);
   }
 
 
   /**
    * Delegates the reservation deletion and decrement the reservation counter accordingly..
    *
-   * @param pjp
-   *     the joint point
+   * @param pjp the joint point
    */
   @Around("execution(*  ReservationRepository.deleteById(..))")
   @SneakyThrows
@@ -120,8 +116,9 @@ class QuotaService {
       // May happen on a rare circumstances because Spring has already made that check before
       // calling this method but there's a small window when this could happen.
       LOG.debug("The reservation with id {} seems to be already deleted by a concurrent thread, "
-              + "execute delete operation anyways and let the error handling layer take care of it",
-          meetingId);
+                    + "execute delete operation anyways and let the error handling layer take care of it",
+                meetingId
+      );
       pjp.proceed(pjp.getArgs());
     }
   }
@@ -129,7 +126,8 @@ class QuotaService {
   private Counter getCounter(final Companies company) {
     return Match(company).of(
         Case($(isEqual(Companies.COKE)), cokeCounter),
-        Case($(isEqual(Companies.PEPSI)), pepsiCounter));
+        Case($(isEqual(Companies.PEPSI)), pepsiCounter)
+    );
   }
 
 }
