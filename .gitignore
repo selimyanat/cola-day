@@ -11,6 +11,7 @@ target/
 .settings
 .springBeans
 .jpb
+.lock
 
 .idea/
 *.iws
@@ -27,3 +28,5 @@ nbdist/
 .classpath
 .project
 .settings/
+/infrastructure/coladay-chart/Chart.lock
+/infrastructure/coladay-chart/charts/postgresql-11.0.0.tgz
