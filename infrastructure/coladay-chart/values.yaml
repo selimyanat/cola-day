@@ -90,3 +90,25 @@ readinessProbe:
 
 livenessProbe:
   enabled: false
+
+postgresql:
+  # Override the redis.fullname template
+  fullnameOverride: postgres
+  global:
+    postgresql:
+      auth:
+        postgresPassword: "secret"
+
+
+dbAdminUrl: jdbc:postgresql://postgres:5432/postgres
+dbAdminUser: postgres
+dbAdminPassword: secret
+coladayDbName: coladay
+coladayDbSchema: coladay
+coladayMigrationDbUrl: jdbc:postgresql://postgres:5432/coladay?currentSchema=coladay
+coladayMigrationDbUser: postgres
+coladayMigrationDbUserPassword: secret
+coladayDbUrl: jdbc:postgresql://postgres:5432/coladay?currentSchema=coladay
+coladayDbUser: postgres
+coladayDbPassword: secret
+coladayLogLevel: INFO
