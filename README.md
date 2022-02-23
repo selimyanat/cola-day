@@ -45,6 +45,11 @@ make run-in-docker-compose
 
 Navigate to the `cola-day` source directory then:
 
+- Build and import coladay dependency by running the following command:
+```
+make build-bitnami-chart
+```
+
 - Deploy (or upgrade) the application to kubernetes by running the following command:
 ```
 make deploy-to-kubernetes
