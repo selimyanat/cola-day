@@ -11,6 +11,10 @@ run-in-docker-compose: build-docker-file
 	docker-compose down
 	docker-compose up
 
+build-bitnami-chart:
+	helm repo add bitnami https://charts.bitnami.com/bitnami
+	helm dependency build ./infrastructure/coladay-chart
+
 create-kubernetes-namespace:
 	echo 'Creating Kubernetes namespace if not exists...'
 	kubectl config use-context docker-desktop
