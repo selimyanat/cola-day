@@ -60,3 +60,11 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create job name.
+*/}}
+{{- define "coladay-chart.job.fullname" -}}
+{{- printf "%s-job" .Release.Name | lower | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+

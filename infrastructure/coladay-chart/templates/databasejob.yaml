@@ -1,0 +1,72 @@
+{{- if .Values.initdb.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "coladay-chart.job.fullname" $ }}-initdb
+  labels:
+    name: {{ template "coladay-chart.fullname" . }}-initdb
+  annotations:
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "10"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+spec:
+  template:
+    metadata:
+      annotations:
+        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      {{- if .Values.podAnnotations}}
+      {{- toYaml .Values.podAnnotations | nindent 8 }}
+      {{- end}}
+      labels:
+        name: {{ template "coladay-chart.fullname" . }}-initdb
+    spec:
+      restartPolicy: OnFailure
+      containers:
+          - name: {{ .Chart.Name }}-initdb-job
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            env:
+              - name: POSTGRES_DB
+                value:  {{ .Values.postgres.db | quote }}
+              - name: POSTGRES_HOST
+                value:  {{ .Values.postgres.host | quote }}
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ template "api-doc-bypass.fullname" . }}-dbsecretmap
+                    key: postgresPassword
+              - name: POSTGRES_PORT
+                value: {{ .Values.postgres.port | quote }}
+              {{- if .Values.postgres.managedPostgres }}
+              - name: POSTGRES_ADMIN_USER
+                value: {{ template "adminDbUser" . }}
+              - name: POSTGRES_SSL
+                value:  {{ .Values.postgres.ssl | quote }}
+              - name: POSTGRES_ADMIN_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ template "api-doc-bypass.fullname" . }}-dbsecretmap
+                    key: postgresAdminPassword
+              - name: POSTGRES_USER
+                value:  {{ template "api-doc-bypass.dbUser" . }}
+              {{- else }}
+              - name: POSTGRES_USER
+                value:  {{ .Values.postgres.user | quote }}
+              - name: POSTGRES_ADMIN_PASSWORD
+                value: {{ .Values.postgres.password }}
+        {{- end }}
+            resources:
+  {{ toYaml .Values.resources | indent 12 }}
+  {{- with .Values.nodeSelector }}
+nodeSelector:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.affinity }}
+affinity:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+tolerations:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- end }}
