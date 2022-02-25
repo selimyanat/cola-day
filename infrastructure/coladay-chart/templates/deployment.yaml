@@ -31,40 +31,6 @@ spec:
         - name: {{ .Chart.Name }}-init
           image: busybox:1.28
           command: [ 'sh', '-c', "until nslookup postgres.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for postgresql; sleep 2; done"]
-        - name: {{ .Chart.Name }}-db-init
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: ENABLE_COLADAY_INIT_MODE
-              value: "true"
-            - name: ENABLE_COLADAY_LOCAL_DEV
-              value: "false"
-            - name: DB_ADMIN_URL
-              value: {{ .Values.dbAdminUrl }}
-            - name: DB_ADMIN_USER
-              value: {{ .Values.dbAdminUser }}
-            - name: DB_ADMIN_PASSWORD
-              value: {{ .Values.dbAdminPassword }}
-            - name: COLADAY_DB_NAME
-              value: {{ .Values.coladayDbName }}
-            - name: COLADAY_DB_URL
-              value: {{ .Values.coladayDbUrl }}
-            - name: COLADAY_DB_USER
-              value: {{ .Values.coladayDbUser }}
-            - name: COLADAY_DB_USER_PASSWORD
-              value: {{ .Values.coladayDbPassword }}
-            - name: COLADAY_DB_SCHEMA
-              value: {{ .Values.coladayDbSchema }}
-            - name: COLADAY_MIGRATION_DB_URL
-              value: {{ .Values.coladayMigrationDbUrl }}
-            - name: COLADAY_MIGRATION_DB_USER
-              value: {{ .Values.coladayMigrationDbUser }}
-            - name: COLADAY_MIGRATION_DB_USER_PASSWORD
-              value: {{ .Values.coladayMigrationDbUserPassword }}
-            - name: COLADAY_ROOT_PACKAGE_LOG_LEVEL
-              value: {{ .Values.coladayLogLevel }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
