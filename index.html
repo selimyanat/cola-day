@@ -822,11 +822,11 @@ Content-Length: 924
         "reservation" : {
           "href" : "http://localhost:8080/reservations/10000"
         },
-        "room" : {
-          "href" : "http://localhost:8080/reservations/10000/room"
-        },
         "organizer" : {
           "href" : "http://localhost:8080/reservations/10000/organizer"
+        },
+        "room" : {
+          "href" : "http://localhost:8080/reservations/10000/room"
         }
       }
     } ]
@@ -1073,6 +1073,20 @@ Content-Length: 701
 <div class="sect1">
 <h2 id="resources_metrics"><a class="link" href="#resources_metrics">Metrics</a></h2>
 <div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+For testing purpose, the examples below use the default application port 8080 to access
+the metric endpoints. However, in production the metric endpoints are accessible by default on port
+8081.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
 <h3 id="_list_all_metrics_endpoints"><a class="link" href="#_list_all_metrics_endpoints">List all metrics endpoints</a></h3>
 <div class="paragraph">
@@ -1111,7 +1125,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Length: 564
 
-{"_links":{"self":{"href":"http://localhost:8080/actuator","templated":false},"health":{"href":"http://localhost:8080/actuator/health","templated":false},"health-component":{"href":"http://localhost:8080/actuator/health/{component}","templated":true},"health-component-instance":{"href":"http://localhost:8080/actuator/health/{component}/{instance}","templated":true},"metrics-requiredMetricName":{"href":"http://localhost:8080/actuator/metrics/{requiredMetricName}","templated":true},"metrics":{"href":"http://localhost:8080/actuator/metrics","templated":false}}}</code></pre>
+{"_links":{"self":{"href":"http://localhost:8080/actuator","templated":false},"health":{"href":"http://localhost:8080/actuator/health","templated":false},"health-component":{"href":"http://localhost:8080/actuator/health/{component}","templated":true},"health-component-instance":{"href":"http://localhost:8080/actuator/health/{component}/{instance}","templated":true},"metrics":{"href":"http://localhost:8080/actuator/metrics","templated":false},"metrics-requiredMetricName":{"href":"http://localhost:8080/actuator/metrics/{requiredMetricName}","templated":true}}}</code></pre>
 </div>
 </div>
 </div>
@@ -1207,7 +1221,7 @@ Content-Length: 15
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-02 15:10:11 UTC
+Last updated 2022-03-02 21:17:18 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
