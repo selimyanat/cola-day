@@ -70,14 +70,6 @@ class ReservationControllerIT {
                              .build();
   }
 
-//  @Test
-//  @SneakyThrows
-//  void check_liquidbase_migration() {
-//    // It uses the public schema
-//    Assert.assertEquals(dataSource.getConnection().getMetaData().getURL(), "coladay");
-//    Assert.assertEquals(dataSource.getConnection().getSchema(), "coladay");
-//  }
-
   @Test
   @SneakyThrows
   void postReservation_return_201() {

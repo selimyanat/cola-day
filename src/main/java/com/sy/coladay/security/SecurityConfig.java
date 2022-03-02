@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         .httpBasic()
         .and()
         .authorizeRequests()
-        .antMatchers("/").permitAll()
+        .antMatchers("/actuator/*").permitAll()
         .anyRequest().authenticated()
         .and()
         .csrf()
