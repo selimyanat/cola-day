@@ -15,5 +15,9 @@ spec:
       targetPort: http
       protocol: TCP
       name: debug
+    - port: {{.Values.service.metricsPort }}
+      targetPort: http
+      protocol: TCP
+      name: metrics
   selector:
     {{- include "coladay-chart.selectorLabels" . | nindent 4 }}

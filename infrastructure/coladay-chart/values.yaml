@@ -41,6 +41,7 @@ service:
   type: ClusterIP
   port: 8080
   debugPort: 8000
+  metricsPort: 8081
 
 
 ingress:
@@ -86,10 +87,18 @@ tolerations: []
 affinity: {}
 
 readinessProbe:
-  enabled: false
+  enabled: true
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 10
 
 livenessProbe:
-  enabled: false
+  enabled: true
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 10
 
 postgresql:
   # Override the redis.fullname template

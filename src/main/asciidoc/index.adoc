@@ -158,3 +158,25 @@ operation::list-all-rooms[snippets='curl-request,http-request,http-response']
 A `GET` request is used to list all users.
 
 operation::list-all-users[snippets='curl-request,http-request,http-response']
+
+[[resources_metrics]]
+== Metrics
+
+=== List all metrics endpoints
+
+A `GET` request is used to list all metrics endpoints.
+
+operation::list-all-metrics-endpoints[snippets='curl-request,http-request,http-response']
+
+=== List all application metrics
+
+A `GET` request is used to list all application metrics.
+
+operation::list-all-applications-metrics[snippets='curl-request,http-request,http-response']
+
+
+=== Read application health
+
+A `GET` request is used to read application health.
+
+operation::read-application-health[snippets='curl-request,http-request,http-response']
