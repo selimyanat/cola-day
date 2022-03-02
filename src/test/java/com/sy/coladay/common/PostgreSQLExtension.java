@@ -64,6 +64,7 @@ public class PostgreSQLExtension implements BeforeAllCallback, AfterAllCallback 
 
   @Override
   public void afterAll(ExtensionContext extensionContext) throws Exception {
+    postgres.stop();
   }
 
 }

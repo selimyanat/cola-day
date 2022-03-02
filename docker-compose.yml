@@ -4,7 +4,7 @@ services:
   app:
     image: 'selimyanat/coladay:latest'
     build:
-      context: .
+      context: ../..
     container_name: coladay
     ports:
       - "9090:8080"
@@ -34,3 +34,12 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret
+  prometheus:
+    image: 'prom/prometheus:v2.31.1'
+    command: --config.file=/etc/prometheus/prometheus.yml --log.level=debug
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "7070:9090"

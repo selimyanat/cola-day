@@ -53,10 +53,6 @@ class ReservationControllerIT {
   User cokeUser;
 
   User pepsiUser;
-//
-//  @Autowired
-//  private DataSource dataSource;
-
 
   @BeforeEach
   void setUp(WebApplicationContext webApplicationContext,

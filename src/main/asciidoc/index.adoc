@@ -121,20 +121,20 @@ The Reservation resources is used to create, delete, update and list resources.
 [[resources_create_reservation]]
 === Creating a reservation
 
-A `POST` request is used to create a reservation.
+A `POST` request used to create a reservation.
 
 operation::create-a-reservation[snippets='curl-request,http-request,http-response']
 
 [[resources_list_reservations]]
 === List reservations
 
-A `GET` request is used to list all reservations.
+A `GET` request used to list all reservations.
 
 operation::get-all-reservations-by-page[snippets='curl-request,http-request,http-response']
 
 === Cancel a reservation
 
-A `DELETE` request is used to cancel a reservation.
+A `DELETE` request used to cancel a reservation.
 
 operation::cancel-a-reservation[snippets='curl-request,http-request,http-response']
 
@@ -144,7 +144,7 @@ operation::cancel-a-reservation[snippets='curl-request,http-request,http-respons
 [[resources_list_rooms]]
 === List rooms
 
-A `GET` request is used to list all rooms and their availabilities.
+A `GET` request used to list all rooms and their availabilities.
 
 operation::list-all-rooms[snippets='curl-request,http-request,http-response']
 
@@ -155,32 +155,35 @@ operation::list-all-rooms[snippets='curl-request,http-request,http-response']
 [[resources_list_users]]
 === List users
 
-A `GET` request is used to list all users.
+A `GET` request used to list all users.
 
 operation::list-all-users[snippets='curl-request,http-request,http-response']
 
 [[resources_metrics]]
 == Metrics
 
-IMPORTANT: For testing purpose, the examples below use the default application port 8080 to access
-the metric endpoints. However, in production the metric endpoints are accessible by default on port
-8081.
-
 === List all metrics endpoints
 
-A `GET` request is used to list all metrics endpoints.
+A `GET` request used to list all metrics endpoints.
 
 operation::list-all-metrics-endpoints[snippets='curl-request,http-request,http-response']
 
 === List all application metrics
 
-A `GET` request is used to list all application metrics.
+A `GET` request used to list all application metrics.
 
 operation::list-all-applications-metrics[snippets='curl-request,http-request,http-response']
 
 
 === Read application health
 
-A `GET` request is used to read application health.
+A `GET` request used to read application health.
 
 operation::read-application-health[snippets='curl-request,http-request,http-response']
+
+=== List all application metrics in prometheus format
+
+A `GET` request used to list all metrics endpoints in prometheus format. This endpoint is
+generally called by Prometheus to scrap application metrics.
+
+operation::list-all-applications-metrics-in-prometheus-format[snippets='curl-request,http-request,http-response']
