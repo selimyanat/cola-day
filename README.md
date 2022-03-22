@@ -1,8 +1,25 @@
-# Cola day Application
+# Cola day: Book your room !
+
+![https://www.freepik.com/vectors/boardroom](img/conference-room.jpg)
+
+[Boardroom vector created by vectorpocket](https://www.freepik.com/vectors/boardroom)
 
 ## Introduction
 
-The cola day application is a CRUD application that meets the following business problem: 
+The goal of this application is to showcase a CRUD application for a booking room system with a 
+limited set of requirements, that follows the best practices of modern software development such as:
+
+- [Github actions](https://github.com/features/actions) and [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) for the Continuous integration and Continuous delivery (CI/CD).
+- [Docker](https://www.docker.com/) to container application.
+- [Kubernetes](https://kubernetes.io/) as a container orchestration system for automating software deployment, scaling, and management.
+- [Helm](https://helm.sh/) to package, manage and deploy the application in Kubernetes.
+- [Docker-compose](https://docs.docker.com/compose/) to run and test the application with its infrastructure dependencies locally without deploying in Kubernetes.
+- [Prometheus](https://prometheus.io/) for event monitoring and alerting.
+- [Grafana](https://grafana.com/) for analytics and interactive visualization web application.
+
+## Business problem
+
+The business problem addressed by this application follows this narrative: 
 
 > Two companies, COKE and PEPSI, are sharing an office building. Tomorrow is COLA day (for one day), that the two companies are celebrating.  They are hosting a number of business partners in the building.
 > 
@@ -20,20 +37,42 @@ The cola day application is a CRUD application that meets the following business
 > 
 > ● Users can cancel their own reservations
 
+## Application
 
-## Requirements
+### Build
 
- - Java 11 or higher
- - Docker
- - Docker compose
- - A version of Kubernetes running locally: Docker for Desktop (Mac or Windows) with Kubernetes support; or MiniKube or K3s (optional)
- - Kubernetes client (optional: for kubernetes deployment only)
- - Helm 3 or higher (optional: for kubernetes deployment only)
+#### Requirements
+
+- Java 11 or higher is a pre-requisite.
+- Docker
 
 
-## Run the application
+#### Git hooks
+The application leverages [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
+to keep the commit log consistent by following a conventional message structure with `git-hooks/commit-msg` hook, `git-hooks/pre-commit` and 
+`git-hooks/pre-push` hooks by running both unit and integration tests before pushing the code to the remote.
 
-### Docker-Compose
+#### Integration tests
+The integration tests use [Test Containers](https://www.testcontainers.org/) for testing 
+against docker containers to keep a high fidelity and confidence before deploying the 
+application in a working environment.
+
+#### Rest API Documentation
+The [Rest API documentation](https://selimyanat.github.io/cola-day/) uses [Spring rest docs](https://docs.spring.io/spring-restdocs/docs/2.0.0.RELEASE/reference/html5/#introduction)
+to generate the documentation out of the tests. [Github page](https://pages.github.com/) is used as a hosting system for the documentation.  
+
+
+### Run
+
+#### Requirements
+
+- Docker
+- Docker compose
+- A version of Kubernetes running locally: Docker for Desktop (Mac or Windows) with Kubernetes support; or MiniKube or K3s (optional)
+- Kubernetes client (optional: for kubernetes deployment only)
+- Helm 3 or higher (optional: for kubernetes deployment only)
+
+#### With Docker-Compose
 
 Navigate to the `cola-day` source directory then issue the following command:
 
@@ -41,7 +80,7 @@ Navigate to the `cola-day` source directory then issue the following command:
 make run-in-docker-compose
 ```
 
-### Kubernetes
+#### With Kubernetes
 
 Navigate to the `cola-day` source directory then:
 
@@ -66,7 +105,7 @@ kubectl --namespace coladay port-forward $POD_NAME 8080:$CONTAINER_PORT
 
 Coladay is a self-contained CRUD application based on **Spring Boot** that runs an embedded servlet 
 container running by default on port 8080 that expose a **REST API**. The following is a list of the
-most important libraries used to develop this application:
+most important technologies used to develop this application:
 
  - [Spring boot](https://spring.io/projects/spring-boot): Simple and rapid framework to create simple and web based applications.
  - [Spring data rest](https://projects.spring.io/spring-data-rest/): Spring library that analyzes the entity repositories and expose them as REST resources.
@@ -78,8 +117,23 @@ most important libraries used to develop this application:
  - [vavr](http://www.vavr.io): Functional library for java.
  - [Junit 5](https://junit.org/junit5/): The next generation of testing framework for java.
  - [AssertionsJ](http://joel-costigliola.github.io/assertj/): Fluent assertions for java.
- - [Test Containers](https://www.testcontainers.org/): A library for integration testing against docker containers from within Rust 
+ - [Test Containers](https://www.testcontainers.org/): A library for integration testing against docker containers from within Rust
+ - [Micrometer](https://micrometer.io/): A library that provides a simple facade over the instrumentation clients for the most popular monitoring systems such as [Prometheus](https://prometheus.io/)
 
 ## API
 
-Visit the API documentation [here](https://selimyanat.github.io/cola-day/) !
+The application requires a use authentication. You can use the users preconfigured in the 
+application  (in the database) `user 1` and `user 2` with their corresponding password `password 
+1` and `password 2`. You can refer the API documentation for examples [here](https://selimyanat.github.io/cola-day/) !
+
+## Monitoring and dashboards
+
+If you run the application with `docker-compose` , you can access `Grafana` and `Prometheus`respectively at `http://locahost:3000` and `http://localhost:7070`. The following is a 
+screenshot of the application dashboard available in `Grafana` that leverages [Micrometer dashboard](https://grafana.com/grafana/dashboards/4701) for JVM application 
+(Java, Spring Boot, Micronaut)
+
+![Application dashboard](img/grafana-micrometer-dashboard.jpg)
+
+## Limitation
+- 
+- Deployment of Grafana and Prometheus in Kubernetes is not yet supported
