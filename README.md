@@ -122,9 +122,9 @@ most important technologies used to develop this application:
 
 ## API
 
-The application requires a use authentication. You can use the users preconfigured in the 
+The application requires a user authentication. You can use the users preconfigured in the 
 application  (in the database) `user 1` and `user 2` with their corresponding password `password 
-1` and `password 2`. You can refer the API documentation for examples [here](https://selimyanat.github.io/cola-day/) !
+1` and `password 2`. You can refer to the API documentation for examples [here](https://selimyanat.github.io/cola-day/) !
 
 ## Monitoring and dashboards
 
@@ -135,5 +135,5 @@ screenshot of the application dashboard available in `Grafana` that leverages [M
 ![Application dashboard](img/grafana-micrometer-dashboard.jpg)
 
 ## Limitation
-- 
+
 - Deployment of Grafana and Prometheus in Kubernetes is not yet supported
