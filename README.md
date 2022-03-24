@@ -10,12 +10,13 @@ The goal of this application is to showcase a CRUD application for a booking roo
 limited set of requirements, that follows the best practices of modern software development such as:
 
 - [Github actions](https://github.com/features/actions) and [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) for the Continuous integration and Continuous delivery (CI/CD).
-- [Docker](https://www.docker.com/) to container application.
+- [SonarCloud](https://sonarcloud.io/) to catch bugs and security Vulnerabilities throughout the code repositories.
+- [Docker](https://www.docker.com/) to containerize the application.
 - [Kubernetes](https://kubernetes.io/) as a container orchestration system for automating software deployment, scaling, and management.
 - [Helm](https://helm.sh/) to package, manage and deploy the application in Kubernetes.
 - [Docker-compose](https://docs.docker.com/compose/) to run and test the application with its infrastructure dependencies locally without deploying in Kubernetes.
 - [Prometheus](https://prometheus.io/) for event monitoring and alerting.
-- [Grafana](https://grafana.com/) for analytics and interactive visualization web application.
+- [Grafana](https://grafana.com/) for analytics and interactive visualization.
 
 ## Business problem
 
@@ -122,9 +123,9 @@ most important technologies used to develop this application:
 
 ## API
 
-The application requires a user authentication. You can use the users preconfigured in the 
-application  (in the database) `user 1` and `user 2` with their corresponding password `password 
-1` and `password 2`. You can refer to the API documentation for examples [here](https://selimyanat.github.io/cola-day/) !
+The application requires a user authentication. You can use the users accounts preconfigured in the 
+application (in the database) `user 1` and `user 2` with their corresponding password `password 
+1` and `password 2`. You can refer to the API documentation [here](https://selimyanat.github.io/cola-day/) !
 
 ## Monitoring and dashboards
 

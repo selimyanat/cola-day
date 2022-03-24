@@ -4,19 +4,17 @@
   "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 <suppressions>
 
-  <!-- No need for Javadoc -->
-  <module name="JavadocType">
-    <property name="severity" value="ignore"/>
-  </module>
-  <module name="JavadocMethod">
-    <property name="severity" value="ignore"/>
-  </module>
-  <module name="JavadocVariable">
-    <property name="severity" value="ignore"/>
-  </module>
-
-  <module name="MissingJavadocMethod">
-    <property name="severity" value="ignore"/>
-  </module>
+    <suppress checks=".*" files="\.java" lines="1-20"/>
+    <suppress checks=".*" files="\.properties"/>
+    <suppress checks="javadoc" files="\.java"/>
+    <suppress checks="AbbreviationAsWordInName" files="\.java"/>
+  <!--    <suppress checks="LineLength" files="\.java"/>-->
+  <!--    <suppress checks="HiddenField" files="\.java"/>-->
+  <!--    <suppress checks="FinalClass" files="\.java"/>-->
+  <!--    <suppress checks="FinalParameters" files="\.java"/>-->
+  <!--    <suppress checks="AvoidInlineConditionals" files="\.java"/>-->
+  <!--    <suppress checks="DesignForExtension" files="\.java"/>-->
+  <!--    <suppress checks="ImportOrder" files="\.java"/>-->
+  <!--    <suppress checks="LocalVariableName" files="\.java"/>-->
 
 </suppressions>

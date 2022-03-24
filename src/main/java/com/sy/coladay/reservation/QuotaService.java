@@ -3,7 +3,6 @@ package com.sy.coladay.reservation;
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
 import static io.vavr.API.Match;
-import static java.lang.String.format;
 import static java.util.function.Predicate.isEqual;
 
 import com.sy.coladay.company.Companies;
@@ -80,10 +79,9 @@ class QuotaService {
 
     final Predicate<Reservation> isQuotaLimitReached = meeting1 -> counter.increment();
     if (isQuotaLimitReached.negate().test(reservation)) {
-      throw new QuotaLimitReachedException(format("Reservation for %s company cannot be created "
-                                                      + "because the quota limit is already reached.",
-                                                  reservation.getOrganizer().getCompany()
-      ));
+      throw new QuotaLimitReachedException(
+          "Reservation for " + reservation.getOrganizer().getCompany()
+              + " company cannot be created because the quota limit is already reached.");
     }
 
     return (Reservation) Try.of(() -> pjp.proceed(pjp.getArgs()))
@@ -102,6 +100,7 @@ class QuotaService {
    *
    * @param pjp the joint point
    */
+  @SuppressWarnings("checkstyle:LineLength")
   @Around("execution(*  ReservationRepository.deleteById(..))")
   @SneakyThrows
   void interceptDeleteOperation(final ProceedingJoinPoint pjp) {
@@ -116,7 +115,8 @@ class QuotaService {
       // May happen on a rare circumstances because Spring has already made that check before
       // calling this method but there's a small window when this could happen.
       LOG.debug("The reservation with id {} seems to be already deleted by a concurrent thread, "
-                    + "execute delete operation anyways and let the error handling layer take care of it",
+                    + "execute delete operation anyways and let the error handling layer take care "
+                    + "of it",
                 meetingId
       );
       pjp.proceed(pjp.getArgs());

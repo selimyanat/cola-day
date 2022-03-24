@@ -27,37 +27,33 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * Integration tests for metrics exposed through spring actuator. NOTE:
- * The test configuration override the configured spring boot actuator port in application
- * .properties as the test is using MockMvc which runs an embedded http.
- *  For Production usage, the actuator endpoints are exposed by default on 8081. This can be
- *  changed by updating the configuration property `management.server.port` in
- *  application.properties.
+ * Integration tests for metrics exposed through spring actuator. NOTE: The test configuration
+ * override the configured spring boot actuator port in application .properties as the test is using
+ * MockMvc which runs an embedded http. For Production usage, the actuator endpoints are exposed by
+ * default on 8081. This can be changed by updating the configuration property
+ * `management.server.port` in application.properties.
  */
-@SpringBootTest(properties = { "management.server.port="})
+@SpringBootTest(properties = {"management.server.port="})
 @ITConfig
-public class MetricsControllerIT {
+class MetricsControllerIT {
 
   @Autowired
   MockMvc mockMvc;
 
   @BeforeEach
-  public void setUp(WebApplicationContext webApplicationContext,
-                    RestDocumentationContextProvider restDocumentation) {
+  void setUp(WebApplicationContext webApplicationContext,
+             RestDocumentationContextProvider restDocumentation) {
 
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                              .apply(documentationConfiguration(restDocumentation))
-                             .apply(springSecurity())
-                             .build();
+                             .apply(springSecurity()).build();
   }
 
   @Test
   @SneakyThrows
-  public void getActuator_return_200() {
+  void getActuator_return_200() {
 
-    mockMvc.perform(get("/actuator/")
-                        .accept(MediaType.APPLICATION_JSON))
-           .andDo(print())
+    mockMvc.perform(get("/actuator/").accept(MediaType.APPLICATION_JSON)).andDo(print())
            .andExpect(status().isOk())
            // In case, we upgrade spring boot or its configuration, this test can catch regression
            // and new functionality
@@ -68,17 +64,14 @@ public class MetricsControllerIT {
            .andExpect(jsonPath("$._links.metrics", notNullValue()))
            .andExpect(jsonPath("$._links.metrics-requiredMetricName", notNullValue()))
            .andExpect(jsonPath("$._links.prometheus", notNullValue()))
-           .andDo(document("list-all-metrics-endpoints"))
-    ;
+           .andDo(document("list-all-metrics-endpoints"));
   }
 
   @Test
   @SneakyThrows
-  public void getMetrics_return_200() {
+  void getMetrics_return_200() {
 
-    mockMvc.perform(get("/actuator/metrics")
-                        .accept(MediaType.APPLICATION_JSON))
-           .andDo(print())
+    mockMvc.perform(get("/actuator/metrics").accept(MediaType.APPLICATION_JSON)).andDo(print())
            .andExpect(status().isOk())
            // In case, we upgrade spring boot this test can catch regression and new functionality
            .andExpect(jsonPath("$.names", hasSize(39)))
@@ -95,62 +88,83 @@ public class MetricsControllerIT {
            .andExpect(jsonPath("$.names", hasItem("process.uptime")))
            .andExpect(jsonPath("$.names", hasItem("process.cpu.usage")))
            .andExpect(jsonPath("$.names", hasItem("process.start.time")))
-           .andDo(document("list-all-applications-metrics"))
-    ;
+           .andDo(document("list-all-applications-metrics"));
 
   }
 
   @Test
   @SneakyThrows
-  public void getHealth_return_200() {
+  void getHealth_return_200() {
 
-    mockMvc.perform(get("/actuator/health")
-                        .accept(MediaType.APPLICATION_JSON))
-           .andDo(print())
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.status", is("UP")))
+    mockMvc.perform(get("/actuator/health").accept(MediaType.APPLICATION_JSON)).andDo(print())
+           .andExpect(status().isOk()).andExpect(jsonPath("$.status", is("UP")))
            .andDo(document("read-application-health"));
   }
 
   @Test
   @SneakyThrows
-  public void getPrometheusMetrics_returns200() {
+  void getPrometheusMetrics_returns200() {
 
-    mockMvc.perform(get("/actuator/prometheus")
-                        .accept(MediaType.TEXT_PLAIN_VALUE))
-           .andDo(print())
+    mockMvc.perform(get("/actuator/prometheus").accept(MediaType.TEXT_PLAIN_VALUE)).andDo(print())
            // NOTE: This is a use case for consumer contract testing!
-           .andExpect(status().isOk())
-           .andExpect(content().string(containsString("jvm_memory_used_bytes{application=\"coladay\",area=\"heap\",id=\"G1 Eden Space\",}")))
-           .andExpect(content().string(containsString("jvm_memory_used_bytes{application=\"coladay\",area=\"heap\",id=\"G1 Old Gen\",}")))
-           .andExpect(content().string(containsString("jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\",id=\"Metaspace\",}")))
-           .andExpect(content().string(containsString("jvm_memory_used_bytes{application=\"coladay\",area=\"heap\",id=\"G1 Survivor Space\",}")))
-           .andExpect(content().string(containsString("jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\",id=\"CodeHeap 'non-nmethods'\",}")))
-           .andExpect(content().string(containsString("jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\",id=\"CodeHeap 'non-profiled nmethods'\",}")))
-           .andExpect(content().string(containsString("jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\",id=\"Compressed Class Space\",}")))
-           .andExpect(content().string(containsString("jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\",id=\"CodeHeap 'profiled nmethods'\",}")))
-           .andExpect(content().string(containsString("system_cpu_usage{application=\"coladay\",}")))
-           .andExpect(content().string(containsString("jdbc_connections_min{application=\"coladay"
-                                                          + "\",name=\"dataSource\",}")))
-           .andExpect(content().string(containsString("jdbc_connections_max{application=\"coladay"
-                                                          + "\",name=\"dataSource\",}")))
-           .andExpect(content().string(containsString("jdbc_connections_active{application=\"coladay"
-                                                          + "\",name=\"dataSource\",}")))
-           .andExpect(content().string(containsString("jvm_threads_states_threads{application"
-                                                          + "=\"coladay\",state=\"runnable\",}")))
-           .andExpect(content().string(containsString("jvm_threads_states_threads{application"
-                                                          + "=\"coladay\",state=\"blocked\",}")))
-           .andExpect(content().string(containsString("jvm_threads_states_threads"
-                                                          + "{application=\"coladay\",state=\"waiting\",}")))
-           .andExpect(content().string(containsString("jvm_threads_states_threads{application"
-                                                          + "=\"coladay\",state=\"timed-waiting\",}")))
-           .andExpect(content().string(containsString("jvm_threads_states_threads{application"
-                                                          + "=\"coladay\",state=\"new\",}")))
-           .andExpect(content().string(containsString("process_uptime_seconds")))
-           .andExpect(content().string(containsString("process_cpu_usage")))
-           .andExpect(content().string(containsString("process_start_time_seconds")))
-           .andDo(document("list-all-applications-metrics-in-prometheus-format"))
-    ;
+           .andExpect(status().isOk()).andExpect(content().string(containsString(
+               "jvm_memory_used_bytes{application=\"coladay\",area=\"heap\","
+                   + "id=\"G1 Eden Space\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_memory_used_bytes{application=\"coladay\",area=\"heap\","
+                   + "id=\"G1 Old Gen\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\","
+                   + "id=\"Metaspace\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_memory_used_bytes{application=\"coladay\",area=\"heap\","
+                   + "id=\"G1 Survivor Space\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\","
+                   + "id=\"CodeHeap 'non-nmethods'\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\","
+                   + "id=\"CodeHeap 'non-profiled nmethods'\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\","
+                   + "id=\"Compressed Class Space\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_memory_used_bytes{application=\"coladay\",area=\"nonheap\","
+                   + "id=\"CodeHeap 'profiled nmethods'\",}")))
+           .andExpect(
+               content().string(containsString(
+                   "system_cpu_usage{application=\"coladay\",}")))
+           .andExpect(content().string(containsString(
+               "jdbc_connections_min{application=\"coladay"
+                   + "\",name=\"dataSource\",}")))
+           .andExpect(content().string(containsString(
+               "jdbc_connections_max{application=\"coladay"
+                   + "\",name=\"dataSource\",}")))
+           .andExpect(content().string(containsString(
+               "jdbc_connections_active{application=\"coladay"
+                   + "\",name=\"dataSource\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_threads_states_threads{application"
+                   + "=\"coladay\",state=\"runnable\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_threads_states_threads{application"
+                   + "=\"coladay\",state=\"blocked\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_threads_states_threads"
+                   + "{application=\"coladay\",state=\"waiting\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_threads_states_threads{application"
+                   + "=\"coladay\",state=\"timed-waiting\",}")))
+           .andExpect(content().string(containsString(
+               "jvm_threads_states_threads{application"
+                   + "=\"coladay\",state=\"new\",}")))
+           .andExpect(content().string(containsString(
+               "process_uptime_seconds")))
+           .andExpect(content().string(containsString(
+               "process_cpu_usage")))
+           .andExpect(content().string(containsString(
+               "process_start_time_seconds")))
+           .andDo(document("list-all-applications-metrics-in-prometheus-format"));
   }
 
 }

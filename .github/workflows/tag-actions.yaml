@@ -18,7 +18,7 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven
-        run: ./mvnw --batch-mode --no-transfer-progress verify --update-snapshots
+        run: ./mvnw --batch-mode --no-transfer-progress verify --update-snapshots -DskipTests
 
   Jar:
     name: Publish to Github package

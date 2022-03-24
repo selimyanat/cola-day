@@ -1,6 +1,7 @@
 package com.sy.coladay.reservation;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,16 +46,15 @@ class ReservationRepositoryListenerTest {
   void handleReservationBeforeCreate_ok() {
     when(authenticationHelper.getCurrentUserPrincipal().getUser()).thenReturn(user);
 
-    underTest.handleReservationBeforeCreate(reservation);
+    assertDoesNotThrow(() -> underTest.handleReservationBeforeCreate(reservation));
     verify(reservation).setOrganizer(user);
   }
 
   @Test
   void handleReservationBeforeDelete_byOrganizer_deletionAllowed() {
     when(authenticationHelper.getCurrentUserPrincipal().getUser()).thenReturn(user);
-    when(reservation.getOrganizer()).thenReturn(user);
 
-    underTest.handleReservationBeforeDelete(reservation);
+    assertDoesNotThrow(() -> underTest.handleReservationBeforeCreate(reservation));
   }
 
 

@@ -62,7 +62,7 @@ class QuotaServiceTest {
   void interceptMeetingCreation_quota_incremented_ok(Companies company) {
     final Counter counter = getCounterFromCompany(company);
     when(user.getCompany()).thenReturn(company);
-    assertThat(counter.getOffset()).isEqualTo(0);
+    assertThat(counter.getOffset()).isZero();
 
     assertAll(
         () -> assertThat(underTest.interceptSaveOperation(proceedingJoinPoint))
@@ -95,7 +95,7 @@ class QuotaServiceTest {
   void interceptMeetingCreation_databaseException_quota_notModified_ok(Companies company) {
 
     final Counter counter = getCounterFromCompany(company);
-    assertThat(counter.getOffset()).isEqualTo(0);
+    assertThat(counter.getOffset()).isZero();
     when(user.getCompany()).thenReturn(company);
     when(proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs()))
         .thenThrow(new RuntimeException("Something bad happen"));
@@ -103,7 +103,7 @@ class QuotaServiceTest {
     assertThatThrownBy(() -> underTest.interceptSaveOperation(proceedingJoinPoint))
         .isInstanceOf(RuntimeException.class)
         .hasMessage("Something bad happen");
-    assertThat(counter.getOffset()).isEqualTo(0);
+    assertThat(counter.getOffset()).isZero();
   }
 
   @ParameterizedTest
@@ -120,7 +120,7 @@ class QuotaServiceTest {
         .thenReturn(Optional.of(reservation));
 
     underTest.interceptDeleteOperation(proceedingJoinPoint);
-    assertThat(counter.getOffset()).isEqualTo(0);
+    assertThat(counter.getOffset()).isZero();
   }
 
   @ParameterizedTest

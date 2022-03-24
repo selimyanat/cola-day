@@ -1,6 +1,8 @@
 package com.sy.coladay.init;
 
+import static java.lang.String.format;
 import static java.lang.System.getenv;
+import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,18 +25,21 @@ public final class CreateDatabaseTask implements Task {
 
   public CreateDatabaseTask() {
 
-    // TODO throw exceptions if not set
     this(getenv("DB_ADMIN_URL"),
          getenv("DB_ADMIN_USER"),
          getenv("DB_ADMIN_PASSWORD"),
          getenv("COLADAY_DB_NAME")
     );
+    if (isAlpha(databaseName)) {
+      throw new IllegalArgumentException(format("Database name %s must contain letters "
+                                                           + "only", databaseName));
+    }
   }
 
   public void exec() {
 
     LOG.info("Running database creation task with db admin url {}, user {} and cola db name {} ",
-             this.dbAdminUrl, this.dbAdminUser, this.dbAdminPassword
+             this.dbAdminUrl, this.dbAdminUser, this.databaseName
     );
     try {
       var dataSource = new DriverManagerDataSource();
@@ -48,14 +53,28 @@ public final class CreateDatabaseTask implements Task {
                                               new Object[]{databaseName},
                                               Integer.class
       );
+
+      // https://www.baeldung.com/sql-injection
+      // Could not use prepared statement here as this approach only works for placeholders used
+      // as values. The main reason behind this is the very nature of a prepared statement:
+      // database server use them to cache the query plan required to pull the result set, which
+      // usually is the same for any possible value. This is not true for table names and other
+      // constructs available in the SQL language such as columns used in an order by clause.
       if (count == 0) {
-        jdbcTemplate.execute("CREATE DATABASE " + databaseName);
+        jdbcTemplate.execute(format("CREATE DATABASE %s", databaseName));
         LOG.info("Database {} created", databaseName);
       } else {
         LOG.info("Skip creating database {} as it already exist", databaseName);
       }
     } catch (Throwable throwable) {
-      throw new RuntimeException(throwable);
+      throw new DatabaseCreationFailure(throwable);
+    }
+  }
+
+  private class DatabaseCreationFailure extends RuntimeException {
+
+    DatabaseCreationFailure(Throwable throwable) {
+      super(throwable);
     }
   }
 }

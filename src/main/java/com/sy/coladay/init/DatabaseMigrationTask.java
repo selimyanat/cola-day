@@ -47,7 +47,14 @@ public class DatabaseMigrationTask implements Task {
       liquibase.update(new Contexts(), new LabelExpression());
     } catch (SQLException | LiquibaseException exception) {
       // should return a result instead of void!
-      throw new RuntimeException(exception);
+      throw new DatabaseMigrationFailure(exception);
+    }
+  }
+
+  private class DatabaseMigrationFailure extends RuntimeException {
+
+    DatabaseMigrationFailure(Throwable throwable) {
+      super(throwable);
     }
   }
 }

@@ -26,6 +26,20 @@
 		<checkstyle.config.location>google_checks.xml</checkstyle.config.location>
 		<spring.restdocs.version>2.0.5.RELEASE</spring.restdocs.version>
 		<testcontainers.version>1.15.1</testcontainers.version>
+		<!-- Test coverage -->
+		<jacoco.output.folder>${project.build.directory}/coverage-reports</jacoco.output.folder>
+		<jacoco.it.execution.data.file>${jacoco.output.folder}/jacoco-it.exec</jacoco.it.execution.data.file>
+		<jacoco.ut.execution.data.file>${jacoco.output.folder}/jacoco-ut.exec</jacoco.ut.execution.data.file>
+		<jacoco.merged.execution.data.file>${jacoco.output.folder}/jacoco-merged.exec</jacoco.merged.execution.data.file>
+		<!-- Sonarcloud configuration -->
+		<sonar.projectKey>selimyanat_cola-day</sonar.projectKey>
+		<sonar.organization>selimyanat</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.coverage.jacoco.xmlReportPaths>
+			${project.reporting.outputDirectory}/jacoco-merged-report/jacoco.xml
+		</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<distributionManagement>
@@ -156,6 +170,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.0</version>
 				<configuration>
+					<argLine>${surefireArgLine}</argLine>
 					<excludes>
 						<exclude>**/*IT.java</exclude>
 					</excludes>
@@ -176,6 +191,8 @@
 							<includes>
 								<include>**/*IT.java</include>
 							</includes>
+							<!-- Sets the VM argument line used when integration tests are run. -->
+							<argLine>${failsafeArgLine}</argLine>
 						</configuration>
 					</execution>
 				</executions>
@@ -198,7 +215,8 @@
 							<consoleOutput>true</consoleOutput>
 							<failsOnError>true</failsOnError>
 							<failOnViolation>true</failOnViolation>
-							<propertyExpansion>checkstyle.suppressions.file=${project.basedir}/checkstyle/checkstyle-suppressions.xml</propertyExpansion>
+							<violationSeverity>warning</violationSeverity>
+							<suppressionsLocation>${project.basedir}/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
 						</configuration>
 						<goals>
 							<goal>check</goal>
@@ -284,6 +302,139 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- Jacoco code coverage -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.5</version>
+				<configuration>
+					<excludes>
+						<exclude>com/sy/coladay/Bootstrap</exclude>
+						<exclude>com/sy/coladay/init/CreateDatabaseTask</exclude>
+						<exclude>com/sy/coladay/init/CreateSchemaTask</exclude>
+						<exclude>com/sy/coladay/init/DatabaseMigrationTask</exclude>
+						<exclude>com/sy/coladay/company/Companies</exclude>
+						<exclude>com/sy/coladay/room/Room</exclude>
+						<exclude>com/sy/coladay/reservation/Reservation</exclude>
+						<exclude>com/sy/coladay/user/User</exclude>
+						<exclude>com/sy/coladay/user/Role</exclude>
+					</excludes>
+				</configuration>
+				<!-- Credit to https://github.com/pkainulainen/maven-examples/blob/master/code-coverage-jacoco/pom.xml
+				 , https://natritmeyer.com/howto/reporting-aggregated-unit-and-integration-test-coverage
+				 -with-jacoco/ and https://blog.qaware.de/posts/sonarqube-and-jacoco/
+				-->
+				<executions>
+					<!--
+              Prepares the property pointing to the JaCoCo runtime agent which
+              is passed as VM argument when Maven the Surefire plugin is executed.
+          -->
+					<execution>
+						<id>before-unit-test-execution</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the execution data. -->
+							<destFile>${jacoco.ut.execution.data.file}</destFile>
+							<!--
+								Sets the name of the property containing the settings
+								for JaCoCo runtime agent.
+							-->
+							<propertyName>surefireArgLine</propertyName>
+						</configuration>
+					</execution>
+					<!--
+							Ensures that the code coverage report for unit tests is created after
+							unit tests have been run.
+          -->
+					<execution>
+						<id>after-unit-test-execution</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the execution data. -->
+							<dataFile>${jacoco.ut.execution.data.file}</dataFile>
+							<!-- Sets the output directory for the code coverage report. -->
+							<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+					<!--
+              Prepares the property pointing to the JaCoCo runtime agent which
+              is passed as VM argument when Maven the Failsafe plugin is executed.
+          -->
+					<execution>
+						<id>before-integration-test-execution</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the execution data. -->
+							<destFile>${jacoco.it.execution.data.file}</destFile>
+							<!--
+                  Sets the name of the property containing the settings
+                  for JaCoCo runtime agent.
+              -->
+							<propertyName>failsafeArgLine</propertyName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>after-integration-test-execution</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the execution data. -->
+							<dataFile>${jacoco.it.execution.data.file}</dataFile>
+							<!-- Sets the output directory for the code coverage report. -->
+							<outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>merge-unit-and-integration</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>merge</goal>
+						</goals>
+						<configuration>
+							<fileSets>
+								<fileSet>
+									<!-- Sets the path to the files which contain the execution data. Don't remove
+									the / at the end of directory name, otherwise Jacoco will not resolve the
+									location and skip the merge step. !!!-->
+									<directory>${jacoco.output.folder}/</directory>
+									<includes>
+										<include>*.exec</include>
+									</includes>
+								</fileSet>
+							</fileSets>
+							<!-- Sets the path to the file which contains the merged execution data. -->
+							<destFile>${jacoco.merged.execution.data.file}</destFile>
+						</configuration>
+					</execution>
+					<execution>
+						<id>create-merged-report</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the merged execution data. -->
+							<dataFile>${jacoco.merged.execution.data.file}</dataFile>
+							<outputDirectory>${project.reporting.outputDirectory}/jacoco-merged-report</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.7.0.1746</version>
 			</plugin>
 		</plugins>
 	</build>
