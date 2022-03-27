@@ -13,7 +13,6 @@ public class ApplicationInitializer {
 
     var task = new CreateDatabaseTask();
     task.exec();
-    ;
   }
 
   private void createSchemaIfNotExists() {

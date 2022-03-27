@@ -40,7 +40,7 @@ class CounterTest {
 
     assertAll(
         () -> assertThat(underTest.decrement()).isTrue(),
-        () -> assertThat(underTest.getOffset()).isEqualTo(0)
+        () -> assertThat(underTest.getOffset()).isZero()
     );
   }
 
@@ -50,7 +50,7 @@ class CounterTest {
 
     assertAll(
         () -> assertThat(underTest.decrement()).isFalse(),
-        () -> assertThat(underTest.getOffset()).isEqualTo(0)
+        () -> assertThat(underTest.getOffset()).isZero()
     );
   }
 

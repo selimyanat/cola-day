@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
     return userRepository
         .findByName(username)
-        .map(user -> new UserPrincipal(user))
+        .map(UserPrincipal::new)
         .orElseThrow(
             () -> new UsernameNotFoundException(format("Username %s not found", username)));
   }

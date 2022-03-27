@@ -31,10 +31,10 @@ public class PostgreSQLExtension implements BeforeAllCallback, AfterAllCallback 
     postgres.start();
 
     var dbBaseUrl =
-        "jdbc:postgresql://" +
-            postgres.getContainerIpAddress() +
-            ":" +
-            postgres.getMappedPort(POSTGRESQL_PORT);
+        "jdbc:postgresql://"
+            + postgres.getContainerIpAddress()
+            + ":"
+            + postgres.getMappedPort(POSTGRESQL_PORT);
     var createDatabaseTask = new CreateDatabaseTask(
         dbBaseUrl + "/postgres",
         postgres.getUsername(),
