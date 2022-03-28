@@ -1,4 +1,6 @@
-[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=selimyanat_cola-day)](https://sonarcloud.io/summary/new_code?id=selimyanat_cola-day)
+![example workflow](https://github.com/selimyanat/cola-day/actions/workflows/master-branch-actions.yaml/badge.svg)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=selimyanat_cola-day&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=selimyanat_cola-day)
 
 
 # Cola day: Book your room !
