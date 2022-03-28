@@ -41,17 +41,17 @@
 			${project.reporting.outputDirectory}/jacoco-merged-report/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
 		<!-- UPDATE THIS ALONG WITH JACOCO CONFIGURATION -->
-		<sonar.coverage.exclusions>
-			com/sy/coladay/Bootstrap,
-			com/sy/coladay/init/CreateDatabaseTask
-			com/sy/coladay/init/CreateSchemaTask
-			com/sy/coladay/init/DatabaseMigrationTask
-			com/sy/coladay/company/Companies
-			com/sy/coladay/room/Room
-			com/sy/coladay/reservation/Reservation
-			com/sy/coladay/user/User
-			com/sy/coladay/user/Role
-		</sonar.coverage.exclusions>
+<!--		<sonar.coverage.exclusions>-->
+<!--			com/sy/coladay/Bootstrap,-->
+<!--			com/sy/coladay/init/CreateDatabaseTask-->
+<!--			com/sy/coladay/init/CreateSchemaTask-->
+<!--			com/sy/coladay/init/DatabaseMigrationTask-->
+<!--			com/sy/coladay/company/Companies-->
+<!--			com/sy/coladay/room/Room-->
+<!--			com/sy/coladay/reservation/Reservation-->
+<!--			com/sy/coladay/user/User-->
+<!--			com/sy/coladay/user/Role-->
+<!--		</sonar.coverage.exclusions>-->
 	</properties>
 
 	<distributionManagement>
