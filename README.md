@@ -1,3 +1,6 @@
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=selimyanat_cola-day)](https://sonarcloud.io/summary/new_code?id=selimyanat_cola-day)
+
+
 # Cola day: Book your room !
 
 ![https://www.freepik.com/vectors/boardroom](img/conference-room.jpg)
