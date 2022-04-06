@@ -175,11 +175,25 @@ A `GET` request used to list all application metrics.
 operation::list-all-applications-metrics[snippets='curl-request,http-request,http-response']
 
 
-=== Read application health
+=== Read aggregated application health
 
 A `GET` request used to read application health.
 
-operation::read-application-health[snippets='curl-request,http-request,http-response']
+operation::read-aggregated-application-health[snippets='curl-request,http-request,http-response']
+
+=== Read readiness probe
+
+A `GET` request used to check application readiness.
+
+operation::read-application-readiness[snippets='curl-request,http-request,http-response']
+
+
+=== Read liveness probe
+
+A `GET` request used to check application liveness.
+
+operation::read-application-liveness[snippets='curl-request,http-request,http-response']
+
 
 === List all application metrics in prometheus format
 
