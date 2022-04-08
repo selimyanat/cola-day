@@ -40,6 +40,15 @@
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.reporting.outputDirectory}/jacoco-merged-report/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.coverage.exclusions>
+			com/sy/coladay/Bootstrap.java,
+			com/sy/coladay/init/*,
+			com/sy/coladay/init/CreateDatabaseTask.java,
+			com/sy/coladay/init/CreateSchemaTask.java,
+			com/sy/coladay/init/DatabaseMigrationTask.java,
+			com/sy/coladay/company/Companies.java,
+			com/sy/coladay/user/Role.java
+		</sonar.coverage.exclusions>
 	</properties>
 
 	<distributionManagement>
@@ -314,15 +323,10 @@
 				<version>0.8.8</version>
 				<configuration>
 					<excludes>
-						<exclude>com/sy/coladay/Bootstrap</exclude>
-						<exclude>com/sy/coladay/init/CreateDatabaseTask</exclude>
-						<exclude>com/sy/coladay/init/CreateSchemaTask</exclude>
-						<exclude>com/sy/coladay/init/DatabaseMigrationTask</exclude>
-						<exclude>com/sy/coladay/company/Companies</exclude>
-						<exclude>com/sy/coladay/room/Room</exclude>
-						<exclude>com/sy/coladay/reservation/Reservation</exclude>
-						<exclude>com/sy/coladay/user/User</exclude>
-						<exclude>com/sy/coladay/user/Role</exclude>
+						<exclude>com/sy/coladay/Bootstrap*</exclude>
+						<exclude>com/sy/coladay/init/*</exclude>
+						<exclude>com/sy/coladay/company/Companies*</exclude>
+						<exclude>com/sy/coladay/user/Role*</exclude>
 					</excludes>
 				</configuration>
 				<!-- Credit to https://github.com/pkainulainen/maven-examples/blob/master/code-coverage-jacoco/pom.xml
