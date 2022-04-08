@@ -29,6 +29,14 @@
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           run: ./mvnw --batch-mode --no-transfer-progress verify --update-snapshots verify sonar:sonar
+        - name: Publish api documentation
+          uses: JamesIves/github-pages-deploy-action@v4.3.0
+          with:
+            branch: gh-pages
+            clean: true
+            folder: target/generated-docs
+            # Do not push the documentation, it tests the integration only
+            dry-run: true
 
 
 
