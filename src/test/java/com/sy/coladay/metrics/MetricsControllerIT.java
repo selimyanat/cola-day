@@ -2,6 +2,7 @@ package com.sy.coladay.metrics;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
@@ -57,13 +58,13 @@ class MetricsControllerIT {
            .andExpect(status().isOk())
            // In case, we upgrade spring boot or its configuration, this test can catch regression
            // and new functionality
-           .andExpect(jsonPath("$._links.length()", is(7)))
-           .andExpect(jsonPath("$._links.health-component-instance", notNullValue()))
-           .andExpect(jsonPath("$._links.health-component", notNullValue()))
+           .andExpect(jsonPath("$._links.length()", is(6)))
+           .andExpect(jsonPath("$._links.self", notNullValue()))
+           .andExpect(jsonPath("$._links.health-path", notNullValue()))
            .andExpect(jsonPath("$._links.health", notNullValue()))
+           .andExpect(jsonPath("$._links.prometheus", notNullValue()))
            .andExpect(jsonPath("$._links.metrics", notNullValue()))
            .andExpect(jsonPath("$._links.metrics-requiredMetricName", notNullValue()))
-           .andExpect(jsonPath("$._links.prometheus", notNullValue()))
            .andDo(document("list-all-metrics-endpoints"));
   }
 
@@ -74,7 +75,7 @@ class MetricsControllerIT {
     mockMvc.perform(get("/actuator/metrics").accept(MediaType.APPLICATION_JSON)).andDo(print())
            .andExpect(status().isOk())
            // In case, we upgrade spring boot this test can catch regression and new functionality
-           .andExpect(jsonPath("$.names", hasSize(39)))
+           .andExpect(jsonPath("$.names", hasSize(54)))
            // watch out the key metrics exposed to the monitoring tool to not break their
            // integration in case of an upgrade of spring boot.
            .andExpect(jsonPath("$.names", hasItem("jvm.threads.states")))
@@ -96,9 +97,34 @@ class MetricsControllerIT {
   @SneakyThrows
   void getHealth_return_200() {
 
-    mockMvc.perform(get("/actuator/health").accept(MediaType.APPLICATION_JSON)).andDo(print())
-           .andExpect(status().isOk()).andExpect(jsonPath("$.status", is("UP")))
-           .andDo(document("read-application-health"));
+    mockMvc.perform(get("/actuator/health").accept(MediaType.APPLICATION_JSON))
+           .andDo(print())
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$.status", is("UP")))
+           .andExpect(jsonPath("$.groups", hasItems("liveness", "readiness")))
+           .andDo(document("read-aggregated-application-health"));
+  }
+
+  @Test
+  @SneakyThrows
+  void getReadinessProbe_return_200() {
+
+    mockMvc.perform(get("/actuator/health/readiness").accept(MediaType.APPLICATION_JSON))
+           .andDo(print())
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$.status", is("UP")))
+           .andDo(document("read-application-readiness"));;
+  }
+
+  @Test
+  @SneakyThrows
+  void getLivenessProbe_return_200() {
+
+    mockMvc.perform(get("/actuator/health/liveness").accept(MediaType.APPLICATION_JSON))
+           .andDo(print())
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$.status", is("UP")))
+           .andDo(document("read-application-liveness"));;
   }
 
   @Test

@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Simple security configuration to secure the application. The mechanism used in here like http
@@ -24,9 +22,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @EnableWebSecurity
-@EnableWebMvc
 @SuppressWarnings("unused")
-public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
   @Autowired
   private UserDetailsServiceImpl userDetailsService;
@@ -46,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         .httpBasic()
         .and()
         .authorizeRequests()
-        .antMatchers("/actuator/*").permitAll()
+        .antMatchers("/actuator/**").permitAll()
         .anyRequest().authenticated()
         .and()
         .csrf()
