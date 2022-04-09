@@ -5,23 +5,38 @@ import static java.lang.System.getenv;
 import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-@RequiredArgsConstructor
 @Slf4j
 public final class CreateDatabaseTask implements Task {
 
-  @NonNull
+
   private final String dbAdminUrl;
-  @NonNull
+
   private final String dbAdminUser;
-  @NonNull
+
   private final String dbAdminPassword;
-  @NonNull
+
   private final String databaseName;
+
+
+  public CreateDatabaseTask(@NonNull String dbAdminUrl,
+                            @NonNull String dbAdminUser,
+                            @NonNull String dbAdminPassword,
+                            @NonNull String databaseName) {
+
+    if (!isAlpha(databaseName)) {
+      throw new IllegalArgumentException(format("Database name %s must contain letters "
+                                                    + "only", databaseName));
+    }
+
+    this.dbAdminUrl = dbAdminUrl;
+    this.dbAdminUser = dbAdminUser;
+    this.dbAdminPassword = dbAdminPassword;
+    this.databaseName = databaseName;
+  }
 
   public CreateDatabaseTask() {
 
@@ -30,10 +45,6 @@ public final class CreateDatabaseTask implements Task {
          getenv("DB_ADMIN_PASSWORD"),
          getenv("COLADAY_DB_NAME")
     );
-    if (isAlpha(databaseName)) {
-      throw new IllegalArgumentException(format("Database name %s must contain letters "
-                                                           + "only", databaseName));
-    }
   }
 
   public void exec() {

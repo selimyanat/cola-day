@@ -5,23 +5,37 @@ import static java.lang.System.getenv;
 import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-@RequiredArgsConstructor
 @Slf4j
 public class CreateSchemaTask implements Task {
 
-  @NonNull
   private final String dbUrl;
-  @NonNull
+
   private final String dbUser;
-  @NonNull
+
   private final String dbUserPassword;
-  @NonNull
+
   private final String dbSchema;
+
+
+  public CreateSchemaTask(@NonNull final String dbUrl,
+                           @NonNull final String dbUser,
+                           @NonNull final String dbUserPassword,
+                           @NonNull final String dbSchema) {
+
+    if (!isAlpha(dbSchema)) {
+      throw new IllegalArgumentException(format("Database schema %s must contain letters "
+                                                    + "only", dbSchema));
+    }
+
+    this.dbUrl = dbUrl;
+    this.dbUser = dbUser;
+    this.dbUserPassword = dbUserPassword;
+    this.dbSchema = dbSchema;
+  }
 
   public CreateSchemaTask() {
 
@@ -30,7 +44,7 @@ public class CreateSchemaTask implements Task {
          getenv("COLADAY_DB_USER_PASSWORD"),
          getenv("COLADAY_DB_SCHEMA")
     );
-    if (isAlpha(dbSchema)) {
+    if (!isAlpha(dbSchema)) {
       throw new IllegalArgumentException(format("Database schema %s must contain letters "
                                                     + "only", dbSchema));
     }

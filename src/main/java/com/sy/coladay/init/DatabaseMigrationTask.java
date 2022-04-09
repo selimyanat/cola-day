@@ -12,19 +12,25 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 public class DatabaseMigrationTask implements Task {
 
-  @NonNull
   private String dbUrl;
-  @NonNull
+
   private String dbUser;
-  @NonNull
+
   private String dbUserPassword;
+
+  public DatabaseMigrationTask(@NonNull String dbUrl,
+                               @NonNull String dbUser,
+                               @NonNull String dbUserPassword) {
+
+    this.dbUrl = dbUrl;
+    this.dbUser = dbUser;
+    this.dbUserPassword = dbUserPassword;
+  }
 
   public DatabaseMigrationTask() {
 
