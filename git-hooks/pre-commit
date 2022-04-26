@@ -8,4 +8,5 @@ clear='\033[0m'
 echo -e "${green}Running pre-commit hook:${clear}"
 
 # Run linting and unit tests
-mvn clean test
+helm lint ./infrastructure/coladay-chart
+./mvnw clean test

@@ -5,6 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.coladay</groupId>
 	<artifactId>coladay</artifactId>
+	<!-- We do not care anymore, the jav version is calculated bj Jgitver maven plugin based on
+	 git tag -->
 	<version>1.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
