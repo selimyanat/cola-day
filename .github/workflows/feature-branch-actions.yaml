@@ -9,7 +9,8 @@
     build:
       runs-on: ubuntu-20.04
       steps:
-        - uses: actions/checkout@v2
+        - name: Checkout source code
+          uses: actions/checkout@v2
           with:
             fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
         - name: Set up JDK 11
@@ -24,7 +25,14 @@
             path: ~/.sonar/cache
             key: ${{ runner.os }}-sonar
             restore-keys: ${{ runner.os }}-sonar
-        - name: Build and analyze
+        - name: Lint docker file
+          uses: hadolint/hadolint-action@v2.0.0
+          with:
+            dockerfile: Dockerfile
+            no-fail: false
+            verbose: true
+            no-color: true
+        - name: Maven build and sonar analysis
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
