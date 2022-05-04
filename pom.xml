@@ -27,7 +27,7 @@
 		<jib.maven.plugin>2.0.0</jib.maven.plugin>
 		<checkstyle.config.location>google_checks.xml</checkstyle.config.location>
 		<spring.restdocs.version>2.0.5.RELEASE</spring.restdocs.version>
-		<testcontainers.version>1.16.3</testcontainers.version>
+		<testcontainers.version>1.17.1</testcontainers.version>
 		<!-- Test coverage -->
 		<jacoco.output.folder>${project.build.directory}/coverage-reports</jacoco.output.folder>
 		<jacoco.it.execution.data.file>${jacoco.output.folder}/jacoco-it.exec</jacoco.it.execution.data.file>

@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -75,9 +74,6 @@ class MetricsControllerIT {
     mockMvc.perform(get("/actuator/metrics").accept(MediaType.APPLICATION_JSON)).andDo(print())
            .andExpect(status().isOk())
            // In case, we upgrade spring boot this test can catch regression and new functionality
-           .andExpect(jsonPath("$.names", hasSize(54)))
-           // watch out the key metrics exposed to the monitoring tool to not break their
-           // integration in case of an upgrade of spring boot.
            .andExpect(jsonPath("$.names", hasItem("jvm.threads.states")))
            .andExpect(jsonPath("$.names", hasItem("jdbc.connections.active")))
            .andExpect(jsonPath("$.names", hasItem("jvm.memory.used")))
