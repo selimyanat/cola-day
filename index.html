@@ -791,11 +791,11 @@ Content-Length: 388
     "reservation" : {
       "href" : "http://localhost:8080/reservations/3"
     },
-    "organizer" : {
-      "href" : "http://localhost:8080/reservations/3/organizer"
-    },
     "room" : {
       "href" : "http://localhost:8080/reservations/3/room"
+    },
+    "organizer" : {
+      "href" : "http://localhost:8080/reservations/3/organizer"
     }
   }
 }</code></pre>
@@ -856,11 +856,11 @@ Content-Length: 881
         "reservation" : {
           "href" : "http://localhost:8080/reservations/10000"
         },
-        "room" : {
-          "href" : "http://localhost:8080/reservations/10000/room"
-        },
         "organizer" : {
           "href" : "http://localhost:8080/reservations/10000/organizer"
+        },
+        "room" : {
+          "href" : "http://localhost:8080/reservations/10000/room"
         }
       }
     } ]
@@ -1360,7 +1360,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: text/plain;version=0.0.4;charset=utf-8
-Content-Length: 15760
+Content-Length: 15757
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
@@ -1368,39 +1368,30 @@ Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
 
-# HELP jvm_gc_max_data_size_bytes Max size of long-lived heap memory pool
-# TYPE jvm_gc_max_data_size_bytes gauge
-jvm_gc_max_data_size_bytes{application="coladay",} 1.822425088E9
-# HELP application_ready_time_seconds Time taken (ms) for the application to be ready to service requests
-# TYPE application_ready_time_seconds gauge
-application_ready_time_seconds{application="coladay",main_application_class="com.sy.coladay.metrics.MetricsControllerIT",} 1.377
-# HELP process_uptime_seconds The uptime of the Java virtual machine
-# TYPE process_uptime_seconds gauge
-process_uptime_seconds{application="coladay",} 25.976
-# HELP process_files_open_files The open file descriptor count
-# TYPE process_files_open_files gauge
-process_files_open_files{application="coladay",} 172.0
-# HELP executor_active_threads The approximate number of threads that are actively executing tasks
-# TYPE executor_active_threads gauge
-executor_active_threads{application="coladay",name="applicationTaskExecutor",} 0.0
-# HELP jvm_threads_live_threads The current number of live threads including both daemon and non-daemon threads
-# TYPE jvm_threads_live_threads gauge
-jvm_threads_live_threads{application="coladay",} 14.0
+# HELP jvm_gc_memory_promoted_bytes_total Count of positive increases in the size of the old generation memory pool before GC to after GC
+# TYPE jvm_gc_memory_promoted_bytes_total counter
+jvm_gc_memory_promoted_bytes_total{application="coladay",} 7980544.0
+# HELP system_load_average_1m The sum of the number of runnable entities queued to available processors and the number of runnable entities running on the available processors averaged over a period of time
+# TYPE system_load_average_1m gauge
+system_load_average_1m{application="coladay",} 1.88
 # HELP disk_total_bytes Total space for path
 # TYPE disk_total_bytes gauge
 disk_total_bytes{application="coladay",path="/home/runner/work/cola-day/cola-day/.",} 8.9311358976E10
-# HELP executor_queued_tasks The approximate number of tasks that are queued for execution
-# TYPE executor_queued_tasks gauge
-executor_queued_tasks{application="coladay",name="applicationTaskExecutor",} 0.0
+# HELP executor_active_threads The approximate number of threads that are actively executing tasks
+# TYPE executor_active_threads gauge
+executor_active_threads{application="coladay",name="applicationTaskExecutor",} 0.0
+# HELP executor_pool_size_threads The current number of threads in the pool
+# TYPE executor_pool_size_threads gauge
+executor_pool_size_threads{application="coladay",name="applicationTaskExecutor",} 0.0
+# HELP jvm_classes_unloaded_classes_total The total number of classes unloaded since the Java virtual machine has started execution
+# TYPE jvm_classes_unloaded_classes_total counter
+jvm_classes_unloaded_classes_total{application="coladay",} 0.0
 # HELP executor_pool_core_threads The core number of threads for the pool
 # TYPE executor_pool_core_threads gauge
 executor_pool_core_threads{application="coladay",name="applicationTaskExecutor",} 8.0
-# HELP process_files_max_files The maximum file descriptor count
-# TYPE process_files_max_files gauge
-process_files_max_files{application="coladay",} 65536.0
-# HELP process_start_time_seconds Start time of the process since unix epoch.
-# TYPE process_start_time_seconds gauge
-process_start_time_seconds{application="coladay",} 1.653895968896E9
+# HELP system_cpu_usage The "recent cpu usage" of the system the application is running in
+# TYPE system_cpu_usage gauge
+system_cpu_usage{application="coladay",} 0.0
 # HELP hikaricp_connections_usage_seconds Connection usage time
 # TYPE hikaricp_connections_usage_seconds summary
 hikaricp_connections_usage_seconds_count{application="coladay",pool="HikariPool-4",} 0.0
@@ -1408,45 +1399,95 @@ hikaricp_connections_usage_seconds_sum{application="coladay",pool="HikariPool-4"
 # HELP hikaricp_connections_usage_seconds_max Connection usage time
 # TYPE hikaricp_connections_usage_seconds_max gauge
 hikaricp_connections_usage_seconds_max{application="coladay",pool="HikariPool-4",} 0.0
-# HELP hikaricp_connections_pending Pending threads
-# TYPE hikaricp_connections_pending gauge
-hikaricp_connections_pending{application="coladay",pool="HikariPool-4",} 0.0
-# HELP spring_data_repository_invocations_seconds_max
-# TYPE spring_data_repository_invocations_seconds_max gauge
-spring_data_repository_invocations_seconds_max{application="coladay",exception="None",method="countByOrganizerCompany",repository="ReservationRepository",state="SUCCESS",} 0.011753041
-# HELP spring_data_repository_invocations_seconds
-# TYPE spring_data_repository_invocations_seconds summary
-spring_data_repository_invocations_seconds_count{application="coladay",exception="None",method="countByOrganizerCompany",repository="ReservationRepository",state="SUCCESS",} 2.0
-spring_data_repository_invocations_seconds_sum{application="coladay",exception="None",method="countByOrganizerCompany",repository="ReservationRepository",state="SUCCESS",} 0.014126169
-# HELP jvm_buffer_memory_used_bytes An estimate of the memory that the Java virtual machine is using for this buffer pool
-# TYPE jvm_buffer_memory_used_bytes gauge
-jvm_buffer_memory_used_bytes{application="coladay",id="direct",} 11106.0
-jvm_buffer_memory_used_bytes{application="coladay",id="mapped",} 0.0
-# HELP hikaricp_connections_max Max connections
-# TYPE hikaricp_connections_max gauge
-hikaricp_connections_max{application="coladay",pool="HikariPool-4",} 10.0
-# HELP jvm_memory_committed_bytes The amount of memory in bytes that is committed for the Java virtual machine to use
-# TYPE jvm_memory_committed_bytes gauge
-jvm_memory_committed_bytes{application="coladay",area="heap",id="G1 Eden Space",} 2.54803968E8
-jvm_memory_committed_bytes{application="coladay",area="heap",id="G1 Old Gen",} 1.56237824E8
-jvm_memory_committed_bytes{application="coladay",area="nonheap",id="Metaspace",} 1.25775872E8
-jvm_memory_committed_bytes{application="coladay",area="heap",id="G1 Survivor Space",} 1.2582912E7
-jvm_memory_committed_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-nmethods'",} 2555904.0
-jvm_memory_committed_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-profiled nmethods'",} 6029312.0
-jvm_memory_committed_bytes{application="coladay",area="nonheap",id="Compressed Class Space",} 1.5151104E7
-jvm_memory_committed_bytes{application="coladay",area="nonheap",id="CodeHeap 'profiled nmethods'",} 3.0408704E7
-# HELP system_cpu_count The number of processors available to the Java virtual machine
-# TYPE system_cpu_count gauge
-system_cpu_count{application="coladay",} 2.0
-# HELP system_cpu_usage The "recent cpu usage" of the system the application is running in
-# TYPE system_cpu_usage gauge
-system_cpu_usage{application="coladay",} 0.0
+# HELP hikaricp_connections_acquire_seconds Connection acquire time
+# TYPE hikaricp_connections_acquire_seconds summary
+hikaricp_connections_acquire_seconds_count{application="coladay",pool="HikariPool-4",} 1.0
+hikaricp_connections_acquire_seconds_sum{application="coladay",pool="HikariPool-4",} 4.35823E-4
+# HELP hikaricp_connections_acquire_seconds_max Connection acquire time
+# TYPE hikaricp_connections_acquire_seconds_max gauge
+hikaricp_connections_acquire_seconds_max{application="coladay",pool="HikariPool-4",} 4.35823E-4
+# HELP hikaricp_connections_idle Idle connections
+# TYPE hikaricp_connections_idle gauge
+hikaricp_connections_idle{application="coladay",pool="HikariPool-4",} 9.0
 # HELP jdbc_connections_active Current number of active connections that have been allocated from the data source.
 # TYPE jdbc_connections_active gauge
 jdbc_connections_active{application="coladay",name="dataSource",} 1.0
-# HELP system_load_average_1m The sum of the number of runnable entities queued to available processors and the number of runnable entities running on the available processors averaged over a period of time
-# TYPE system_load_average_1m gauge
-system_load_average_1m{application="coladay",} 2.66
+# HELP executor_completed_tasks_total The approximate total number of tasks that have completed execution
+# TYPE executor_completed_tasks_total counter
+executor_completed_tasks_total{application="coladay",name="applicationTaskExecutor",} 0.0
+# HELP jvm_gc_memory_allocated_bytes_total Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next
+# TYPE jvm_gc_memory_allocated_bytes_total counter
+jvm_gc_memory_allocated_bytes_total{application="coladay",} 2.32783872E8
+# HELP jvm_memory_committed_bytes The amount of memory in bytes that is committed for the Java virtual machine to use
+# TYPE jvm_memory_committed_bytes gauge
+jvm_memory_committed_bytes{application="coladay",area="heap",id="G1 Eden Space",} 2.53755392E8
+jvm_memory_committed_bytes{application="coladay",area="heap",id="G1 Old Gen",} 1.58334976E8
+jvm_memory_committed_bytes{application="coladay",area="nonheap",id="Metaspace",} 1.25415424E8
+jvm_memory_committed_bytes{application="coladay",area="heap",id="G1 Survivor Space",} 1.6777216E7
+jvm_memory_committed_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-nmethods'",} 2555904.0
+jvm_memory_committed_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-profiled nmethods'",} 5636096.0
+jvm_memory_committed_bytes{application="coladay",area="nonheap",id="Compressed Class Space",} 1.5151104E7
+jvm_memory_committed_bytes{application="coladay",area="nonheap",id="CodeHeap 'profiled nmethods'",} 2.9556736E7
+# HELP jvm_threads_daemon_threads The current number of live daemon threads
+# TYPE jvm_threads_daemon_threads gauge
+jvm_threads_daemon_threads{application="coladay",} 13.0
+# HELP process_cpu_usage The "recent cpu usage" for the Java Virtual Machine process
+# TYPE process_cpu_usage gauge
+process_cpu_usage{application="coladay",} 0.0
+# HELP process_files_max_files The maximum file descriptor count
+# TYPE process_files_max_files gauge
+process_files_max_files{application="coladay",} 65536.0
+# HELP jvm_gc_live_data_size_bytes Size of long-lived heap memory pool after reclamation
+# TYPE jvm_gc_live_data_size_bytes gauge
+jvm_gc_live_data_size_bytes{application="coladay",} 0.0
+# HELP executor_queued_tasks The approximate number of tasks that are queued for execution
+# TYPE executor_queued_tasks gauge
+executor_queued_tasks{application="coladay",name="applicationTaskExecutor",} 0.0
+# HELP jdbc_connections_min Minimum number of idle connections in the pool.
+# TYPE jdbc_connections_min gauge
+jdbc_connections_min{application="coladay",name="dataSource",} 10.0
+# HELP process_files_open_files The open file descriptor count
+# TYPE process_files_open_files gauge
+process_files_open_files{application="coladay",} 172.0
+# HELP logback_events_total Number of error level events that made it to the logs
+# TYPE logback_events_total counter
+logback_events_total{application="coladay",level="error",} 0.0
+logback_events_total{application="coladay",level="debug",} 0.0
+logback_events_total{application="coladay",level="trace",} 0.0
+logback_events_total{application="coladay",level="warn",} 1.0
+logback_events_total{application="coladay",level="info",} 10.0
+# HELP disk_free_bytes Usable space for path
+# TYPE disk_free_bytes gauge
+disk_free_bytes{application="coladay",path="/home/runner/work/cola-day/cola-day/.",} 3.1154884608E10
+# HELP jvm_buffer_total_capacity_bytes An estimate of the total capacity of the buffers in this pool
+# TYPE jvm_buffer_total_capacity_bytes gauge
+jvm_buffer_total_capacity_bytes{application="coladay",id="direct",} 11106.0
+jvm_buffer_total_capacity_bytes{application="coladay",id="mapped",} 0.0
+# HELP jvm_threads_live_threads The current number of live threads including both daemon and non-daemon threads
+# TYPE jvm_threads_live_threads gauge
+jvm_threads_live_threads{application="coladay",} 14.0
+# HELP executor_queue_remaining_tasks The number of additional elements that this queue can ideally accept without blocking
+# TYPE executor_queue_remaining_tasks gauge
+executor_queue_remaining_tasks{application="coladay",name="applicationTaskExecutor",} 2.147483647E9
+# HELP jvm_gc_overhead_percent An approximation of the percent of CPU time used by GC activities over the last lookback period or since monitoring began, whichever is shorter, in the range [0..1]
+# TYPE jvm_gc_overhead_percent gauge
+jvm_gc_overhead_percent{application="coladay",} 0.0735117229062839
+# HELP spring_data_repository_invocations_seconds_max
+# TYPE spring_data_repository_invocations_seconds_max gauge
+spring_data_repository_invocations_seconds_max{application="coladay",exception="None",method="countByOrganizerCompany",repository="ReservationRepository",state="SUCCESS",} 0.012619546
+# HELP spring_data_repository_invocations_seconds
+# TYPE spring_data_repository_invocations_seconds summary
+spring_data_repository_invocations_seconds_count{application="coladay",exception="None",method="countByOrganizerCompany",repository="ReservationRepository",state="SUCCESS",} 2.0
+spring_data_repository_invocations_seconds_sum{application="coladay",exception="None",method="countByOrganizerCompany",repository="ReservationRepository",state="SUCCESS",} 0.014873661
+# HELP process_uptime_seconds The uptime of the Java virtual machine
+# TYPE process_uptime_seconds gauge
+process_uptime_seconds{application="coladay",} 24.236
+# HELP jvm_classes_loaded_classes The number of classes that are currently loaded in the Java virtual machine
+# TYPE jvm_classes_loaded_classes gauge
+jvm_classes_loaded_classes{application="coladay",} 19454.0
+# HELP jvm_memory_usage_after_gc_percent The percentage of long-lived heap pool used after the last GC event, in the range [0..1]
+# TYPE jvm_memory_usage_after_gc_percent gauge
+jvm_memory_usage_after_gc_percent{application="coladay",area="heap",pool="long-lived",} 0.028544787021720367
 # HELP jvm_threads_states_threads The current number of threads having NEW state
 # TYPE jvm_threads_states_threads gauge
 jvm_threads_states_threads{application="coladay",state="blocked",} 0.0
@@ -1455,15 +1496,6 @@ jvm_threads_states_threads{application="coladay",state="timed-waiting",} 8.0
 jvm_threads_states_threads{application="coladay",state="runnable",} 5.0
 jvm_threads_states_threads{application="coladay",state="new",} 0.0
 jvm_threads_states_threads{application="coladay",state="terminated",} 0.0
-# HELP jdbc_connections_max Maximum number of active connections that can be allocated at the same time.
-# TYPE jdbc_connections_max gauge
-jdbc_connections_max{application="coladay",name="dataSource",} 10.0
-# HELP process_cpu_usage The "recent cpu usage" for the Java Virtual Machine process
-# TYPE process_cpu_usage gauge
-process_cpu_usage{application="coladay",} 0.0
-# HELP jvm_gc_overhead_percent An approximation of the percent of CPU time used by GC activities over the last lookback period or since monitoring began, whichever is shorter, in the range [0..1]
-# TYPE jvm_gc_overhead_percent gauge
-jvm_gc_overhead_percent{application="coladay",} 0.04418226765365022
 # HELP jvm_memory_max_bytes The maximum amount of memory in bytes that can be used for memory management
 # TYPE jvm_memory_max_bytes gauge
 jvm_memory_max_bytes{application="coladay",area="heap",id="G1 Eden Space",} -1.0
@@ -1474,88 +1506,41 @@ jvm_memory_max_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-nmet
 jvm_memory_max_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-profiled nmethods'",} 1.22916864E8
 jvm_memory_max_bytes{application="coladay",area="nonheap",id="Compressed Class Space",} 1.073741824E9
 jvm_memory_max_bytes{application="coladay",area="nonheap",id="CodeHeap 'profiled nmethods'",} 1.22912768E8
-# HELP executor_completed_tasks_total The approximate total number of tasks that have completed execution
-# TYPE executor_completed_tasks_total counter
-executor_completed_tasks_total{application="coladay",name="applicationTaskExecutor",} 0.0
-# HELP jvm_gc_memory_allocated_bytes_total Incremented for an increase in the size of the (young) heap memory pool after one GC to before the next
-# TYPE jvm_gc_memory_allocated_bytes_total counter
-jvm_gc_memory_allocated_bytes_total{application="coladay",} 2.00278016E8
-# HELP disk_free_bytes Usable space for path
-# TYPE disk_free_bytes gauge
-disk_free_bytes{application="coladay",path="/home/runner/work/cola-day/cola-day/.",} 3.1736786944E10
-# HELP jvm_classes_unloaded_classes_total The total number of classes unloaded since the Java virtual machine has started execution
-# TYPE jvm_classes_unloaded_classes_total counter
-jvm_classes_unloaded_classes_total{application="coladay",} 0.0
-# HELP jvm_threads_daemon_threads The current number of live daemon threads
-# TYPE jvm_threads_daemon_threads gauge
-jvm_threads_daemon_threads{application="coladay",} 13.0
-# HELP jvm_gc_live_data_size_bytes Size of long-lived heap memory pool after reclamation
-# TYPE jvm_gc_live_data_size_bytes gauge
-jvm_gc_live_data_size_bytes{application="coladay",} 0.0
-# HELP application_started_time_seconds Time taken (ms) to start the application
-# TYPE application_started_time_seconds gauge
-application_started_time_seconds{application="coladay",main_application_class="com.sy.coladay.metrics.MetricsControllerIT",} 1.375
-# HELP jvm_classes_loaded_classes The number of classes that are currently loaded in the Java virtual machine
-# TYPE jvm_classes_loaded_classes gauge
-jvm_classes_loaded_classes{application="coladay",} 19456.0
-# HELP jvm_threads_peak_threads The peak live thread count since the Java virtual machine started or peak was reset
-# TYPE jvm_threads_peak_threads gauge
-jvm_threads_peak_threads{application="coladay",} 15.0
-# HELP jvm_buffer_total_capacity_bytes An estimate of the total capacity of the buffers in this pool
-# TYPE jvm_buffer_total_capacity_bytes gauge
-jvm_buffer_total_capacity_bytes{application="coladay",id="direct",} 11106.0
-jvm_buffer_total_capacity_bytes{application="coladay",id="mapped",} 0.0
-# HELP jdbc_connections_min Minimum number of idle connections in the pool.
-# TYPE jdbc_connections_min gauge
-jdbc_connections_min{application="coladay",name="dataSource",} 10.0
-# HELP executor_queue_remaining_tasks The number of additional elements that this queue can ideally accept without blocking
-# TYPE executor_queue_remaining_tasks gauge
-executor_queue_remaining_tasks{application="coladay",name="applicationTaskExecutor",} 2.147483647E9
 # HELP executor_pool_max_threads The maximum allowed number of threads in the pool
 # TYPE executor_pool_max_threads gauge
 executor_pool_max_threads{application="coladay",name="applicationTaskExecutor",} 2.147483647E9
-# HELP hikaricp_connections_min Min connections
-# TYPE hikaricp_connections_min gauge
-hikaricp_connections_min{application="coladay",pool="HikariPool-4",} 10.0
+# HELP application_started_time_seconds Time taken (ms) to start the application
+# TYPE application_started_time_seconds gauge
+application_started_time_seconds{application="coladay",main_application_class="com.sy.coladay.metrics.MetricsControllerIT",} 1.273
+# HELP jvm_buffer_memory_used_bytes An estimate of the memory that the Java virtual machine is using for this buffer pool
+# TYPE jvm_buffer_memory_used_bytes gauge
+jvm_buffer_memory_used_bytes{application="coladay",id="direct",} 11106.0
+jvm_buffer_memory_used_bytes{application="coladay",id="mapped",} 0.0
 # HELP jdbc_connections_idle Number of established but idle connections.
 # TYPE jdbc_connections_idle gauge
 jdbc_connections_idle{application="coladay",name="dataSource",} 9.0
-# HELP jvm_memory_usage_after_gc_percent The percentage of long-lived heap pool used after the last GC event, in the range [0..1]
-# TYPE jvm_memory_usage_after_gc_percent gauge
-jvm_memory_usage_after_gc_percent{application="coladay",area="heap",pool="long-lived",} 0.031212072515103568
-# HELP jvm_gc_memory_promoted_bytes_total Count of positive increases in the size of the old generation memory pool before GC to after GC
-# TYPE jvm_gc_memory_promoted_bytes_total counter
-jvm_gc_memory_promoted_bytes_total{application="coladay",} 4676096.0
-# HELP jvm_memory_used_bytes The amount of used memory
-# TYPE jvm_memory_used_bytes gauge
-jvm_memory_used_bytes{application="coladay",area="heap",id="G1 Eden Space",} 1.97132288E8
-jvm_memory_used_bytes{application="coladay",area="heap",id="G1 Old Gen",} 5.6881664E7
-jvm_memory_used_bytes{application="coladay",area="nonheap",id="Metaspace",} 1.22296248E8
-jvm_memory_used_bytes{application="coladay",area="heap",id="G1 Survivor Space",} 1.2582912E7
-jvm_memory_used_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-nmethods'",} 1295616.0
-jvm_memory_used_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-profiled nmethods'",} 5973760.0
-jvm_memory_used_bytes{application="coladay",area="nonheap",id="Compressed Class Space",} 1.3850176E7
-jvm_memory_used_bytes{application="coladay",area="nonheap",id="CodeHeap 'profiled nmethods'",} 3.0381568E7
-# HELP hikaricp_connections_active Active connections
-# TYPE hikaricp_connections_active gauge
-hikaricp_connections_active{application="coladay",pool="HikariPool-4",} 1.0
-# HELP logback_events_total Number of error level events that made it to the logs
-# TYPE logback_events_total counter
-logback_events_total{application="coladay",level="error",} 0.0
-logback_events_total{application="coladay",level="debug",} 0.0
-logback_events_total{application="coladay",level="trace",} 0.0
-logback_events_total{application="coladay",level="warn",} 1.0
-logback_events_total{application="coladay",level="info",} 10.0
-# HELP executor_pool_size_threads The current number of threads in the pool
-# TYPE executor_pool_size_threads gauge
-executor_pool_size_threads{application="coladay",name="applicationTaskExecutor",} 0.0
-# HELP hikaricp_connections_idle Idle connections
-# TYPE hikaricp_connections_idle gauge
-hikaricp_connections_idle{application="coladay",pool="HikariPool-4",} 9.0
 # HELP jvm_buffer_count_buffers An estimate of the number of buffers in the pool
 # TYPE jvm_buffer_count_buffers gauge
 jvm_buffer_count_buffers{application="coladay",id="direct",} 1.0
 jvm_buffer_count_buffers{application="coladay",id="mapped",} 0.0
+# HELP jvm_gc_max_data_size_bytes Max size of long-lived heap memory pool
+# TYPE jvm_gc_max_data_size_bytes gauge
+jvm_gc_max_data_size_bytes{application="coladay",} 1.822425088E9
+# HELP jvm_threads_peak_threads The peak live thread count since the Java virtual machine started or peak was reset
+# TYPE jvm_threads_peak_threads gauge
+jvm_threads_peak_threads{application="coladay",} 15.0
+# HELP hikaricp_connections_min Min connections
+# TYPE hikaricp_connections_min gauge
+hikaricp_connections_min{application="coladay",pool="HikariPool-4",} 10.0
+# HELP process_start_time_seconds Start time of the process since unix epoch.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds{application="coladay",} 1.653981600144E9
+# HELP system_cpu_count The number of processors available to the Java virtual machine
+# TYPE system_cpu_count gauge
+system_cpu_count{application="coladay",} 2.0
+# HELP hikaricp_connections_max Max connections
+# TYPE hikaricp_connections_max gauge
+hikaricp_connections_max{application="coladay",pool="HikariPool-4",} 10.0
 # HELP hikaricp_connections_creation_seconds_max Connection creation time
 # TYPE hikaricp_connections_creation_seconds_max gauge
 hikaricp_connections_creation_seconds_max{application="coladay",pool="HikariPool-4",} 0.0
@@ -1563,26 +1548,41 @@ hikaricp_connections_creation_seconds_max{application="coladay",pool="HikariPool
 # TYPE hikaricp_connections_creation_seconds summary
 hikaricp_connections_creation_seconds_count{application="coladay",pool="HikariPool-4",} 0.0
 hikaricp_connections_creation_seconds_sum{application="coladay",pool="HikariPool-4",} 0.0
-# HELP hikaricp_connections_acquire_seconds Connection acquire time
-# TYPE hikaricp_connections_acquire_seconds summary
-hikaricp_connections_acquire_seconds_count{application="coladay",pool="HikariPool-4",} 1.0
-hikaricp_connections_acquire_seconds_sum{application="coladay",pool="HikariPool-4",} 4.44206E-4
-# HELP hikaricp_connections_acquire_seconds_max Connection acquire time
-# TYPE hikaricp_connections_acquire_seconds_max gauge
-hikaricp_connections_acquire_seconds_max{application="coladay",pool="HikariPool-4",} 4.44206E-4
-# HELP jvm_gc_pause_seconds Time spent in GC pause
-# TYPE jvm_gc_pause_seconds summary
-jvm_gc_pause_seconds_count{action="end of minor GC",application="coladay",cause="G1 Evacuation Pause",} 1.0
-jvm_gc_pause_seconds_sum{action="end of minor GC",application="coladay",cause="G1 Evacuation Pause",} 0.035
-# HELP jvm_gc_pause_seconds_max Time spent in GC pause
-# TYPE jvm_gc_pause_seconds_max gauge
-jvm_gc_pause_seconds_max{action="end of minor GC",application="coladay",cause="G1 Evacuation Pause",} 0.035
+# HELP jvm_memory_used_bytes The amount of used memory
+# TYPE jvm_memory_used_bytes gauge
+jvm_memory_used_bytes{application="coladay",area="heap",id="G1 Eden Space",} 1.84549376E8
+jvm_memory_used_bytes{application="coladay",area="heap",id="G1 Old Gen",} 5.2020736E7
+jvm_memory_used_bytes{application="coladay",area="nonheap",id="Metaspace",} 1.22074152E8
+jvm_memory_used_bytes{application="coladay",area="heap",id="G1 Survivor Space",} 1.6777216E7
+jvm_memory_used_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-nmethods'",} 1285760.0
+jvm_memory_used_bytes{application="coladay",area="nonheap",id="CodeHeap 'non-profiled nmethods'",} 5598080.0
+jvm_memory_used_bytes{application="coladay",area="nonheap",id="Compressed Class Space",} 1.38544E7
+jvm_memory_used_bytes{application="coladay",area="nonheap",id="CodeHeap 'profiled nmethods'",} 2.9562112E7
+# HELP hikaricp_connections Total connections
+# TYPE hikaricp_connections gauge
+hikaricp_connections{application="coladay",pool="HikariPool-4",} 10.0
+# HELP jdbc_connections_max Maximum number of active connections that can be allocated at the same time.
+# TYPE jdbc_connections_max gauge
+jdbc_connections_max{application="coladay",name="dataSource",} 10.0
 # HELP hikaricp_connections_timeout_total Connection timeout total count
 # TYPE hikaricp_connections_timeout_total counter
 hikaricp_connections_timeout_total{application="coladay",pool="HikariPool-4",} 0.0
-# HELP hikaricp_connections Total connections
-# TYPE hikaricp_connections gauge
-hikaricp_connections{application="coladay",pool="HikariPool-4",} 10.0</code></pre>
+# HELP jvm_gc_pause_seconds Time spent in GC pause
+# TYPE jvm_gc_pause_seconds summary
+jvm_gc_pause_seconds_count{action="end of minor GC",application="coladay",cause="G1 Evacuation Pause",} 1.0
+jvm_gc_pause_seconds_sum{action="end of minor GC",application="coladay",cause="G1 Evacuation Pause",} 0.054
+# HELP jvm_gc_pause_seconds_max Time spent in GC pause
+# TYPE jvm_gc_pause_seconds_max gauge
+jvm_gc_pause_seconds_max{action="end of minor GC",application="coladay",cause="G1 Evacuation Pause",} 0.054
+# HELP application_ready_time_seconds Time taken (ms) for the application to be ready to service requests
+# TYPE application_ready_time_seconds gauge
+application_ready_time_seconds{application="coladay",main_application_class="com.sy.coladay.metrics.MetricsControllerIT",} 1.275
+# HELP hikaricp_connections_active Active connections
+# TYPE hikaricp_connections_active gauge
+hikaricp_connections_active{application="coladay",pool="HikariPool-4",} 1.0
+# HELP hikaricp_connections_pending Pending threads
+# TYPE hikaricp_connections_pending gauge
+hikaricp_connections_pending{application="coladay",pool="HikariPool-4",} 0.0</code></pre>
 </div>
 </div>
 </div>
@@ -1592,7 +1592,7 @@ hikaricp_connections{application="coladay",pool="HikariPool-4",} 10.0</code></pr
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-30 07:32:22 UTC
+Last updated 2022-05-31 07:19:35 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
