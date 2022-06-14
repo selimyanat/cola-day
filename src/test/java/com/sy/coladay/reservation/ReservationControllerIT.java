@@ -1,5 +1,6 @@
 package com.sy.coladay.reservation;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -50,6 +51,9 @@ class ReservationControllerIT {
   @Autowired
   UserRepository userRepository;
 
+  @Autowired
+  ReservationMetrics reservationMetrics;
+
   User cokeUser;
 
   User pepsiUser;
@@ -70,6 +74,9 @@ class ReservationControllerIT {
   @SneakyThrows
   void postReservation_return_201() {
 
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
+
     final Map<String, String> reservation = new HashMap<>();
     reservation.put("timeSlot", TimeSlots.NINE_AM_TO_TEN_AM.name());
     reservation.put("room", "/rooms/1");
@@ -89,11 +96,17 @@ class ReservationControllerIT {
            .andExpect(jsonPath("$._links.organizer", notNullValue()))
            .andExpect(jsonPath("$._links.room", notNullValue()))
            .andDo(document("create-a-reservation"));
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(1d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
   }
 
   @Test
   @SneakyThrows
   void postReservation_unauthenticated_return_401() {
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
 
     final Map<String, String> reservation = new HashMap<>();
     reservation.put("timeSlot", TimeSlots.NINE_AM_TO_TEN_AM.name());
@@ -107,11 +120,17 @@ class ReservationControllerIT {
            .andDo(print())
            .andExpect(status().isUnauthorized())
            .andExpect(status().reason("Unauthorized"));
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
   }
 
   @Test
   @SneakyThrows
   void postReservation_busySchedule_return_409() {
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
 
     final Map<String, String> reservationOnBusySchedule = new HashMap<>();
     reservationOnBusySchedule.put("timeSlot", TimeSlots.EIGHT_AM_TO_NINE_AM.name());
@@ -125,6 +144,9 @@ class ReservationControllerIT {
            .andDo(print())
            .andExpect(status().isConflict())
            .andExpect(status().reason("The data presented are in conflict with existing ones"));
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
   }
 
   @Test
@@ -161,6 +183,9 @@ class ReservationControllerIT {
   @SneakyThrows
   void postReservation_quotaReached_return_409() {
 
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
+
     final Map<String, String> firstReservation = new HashMap<>();
     firstReservation.put("timeSlot", TimeSlots.TEN_AM_TO_ELEVEN_AM.name());
     firstReservation.put("room", "/rooms/10");
@@ -172,6 +197,9 @@ class ReservationControllerIT {
                         .accept(MediaTypes.HAL_JSON_VALUE))
            .andDo(print())
            .andExpect(status().isCreated());
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(1d);
 
     final Map<String, String> reservation = new HashMap<>();
     reservation.put("timeSlot", TimeSlots.TEN_AM_TO_ELEVEN_AM.name());
@@ -186,11 +214,17 @@ class ReservationControllerIT {
            .andExpect(status().isConflict())
            .andExpect(status().reason("Quota limit reached"))
            .andDo(document("create-a-reservation-quota-reached"));
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(1d);
   }
 
   @Test
   @SneakyThrows
   void getReservations_unauthenticated_return_401() {
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
 
     mockMvc.perform(get("/reservations")
                         .with(httpBasic("unknownUser", "aPassword"))
@@ -198,11 +232,17 @@ class ReservationControllerIT {
            .andDo(print())
            .andExpect(status().isUnauthorized())
            .andExpect(status().reason("Unauthorized"));
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
   }
 
   @Test
   @SneakyThrows
   void cancelReservation_unauthenticated_return_401() {
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
 
     mockMvc.perform(delete("/reservations/{id}", 1)
                         .with(httpBasic("unknownUser", "aPassword"))
@@ -210,11 +250,17 @@ class ReservationControllerIT {
            .andDo(print())
            .andExpect(status().isUnauthorized())
            .andExpect(status().reason("Unauthorized"));
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
   }
 
   @Test
   @SneakyThrows
   void cancelReservation_return_204() {
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
 
     mockMvc.perform(delete("/reservations/{id}", 10000)
                         .with(httpBasic(cokeUser.getName(), cokeUser.getPassword()))
@@ -222,11 +268,17 @@ class ReservationControllerIT {
            .andDo(print())
            .andExpect(status().isNoContent())
            .andDo(document("cancel-a-reservation"));
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
   }
 
   @Test
   @SneakyThrows
   void cancelReservation_ofAnotherUser_return_403() {
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
 
     mockMvc.perform(delete("/reservations/{id}", 10000)
                         .with(httpBasic(pepsiUser.getName(), pepsiUser.getPassword()))
@@ -234,5 +286,8 @@ class ReservationControllerIT {
            .andDo(print())
            .andExpect(status().isForbidden())
            .andExpect(status().reason("Forbidden reservation cancellation"));
+
+    assertThat(reservationMetrics.getCokeNumberOfReservations().count()).isEqualTo(0d);
+    assertThat(reservationMetrics.getPepsiNumberOfReservations().count()).isEqualTo(0d);
   }
 }

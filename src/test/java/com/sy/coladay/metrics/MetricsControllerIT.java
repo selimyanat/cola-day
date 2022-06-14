@@ -127,9 +127,15 @@ class MetricsControllerIT {
   @SneakyThrows
   void getPrometheusMetrics_returns200() {
 
-    mockMvc.perform(get("/actuator/prometheus").accept(MediaType.TEXT_PLAIN_VALUE)).andDo(print())
+    mockMvc.perform(get("/actuator/prometheus").accept(MediaType.TEXT_PLAIN_VALUE))
+           .andDo(print())
            // NOTE: This is a use case for consumer contract testing!
-           .andExpect(status().isOk()).andExpect(content().string(containsString(
+           .andExpect(status().isOk())
+           .andExpect(content().string(containsString(
+               "number_of_reservations_total{application=\"coladay\",owner=\"coke\",}")))
+           .andExpect(content().string(containsString(
+               "number_of_reservations_total{application=\"coladay\",owner=\"pepsi\",}")))
+           .andExpect(content().string(containsString(
                "jvm_memory_used_bytes{application=\"coladay\",area=\"heap\","
                    + "id=\"G1 Eden Space\",}")))
            .andExpect(content().string(containsString(

@@ -116,6 +116,13 @@ kubectl --namespace coladay port-forward $POD_NAME 8080:$CONTAINER_PORT
 
 If you run the application with `docker-compose` , you can access `Grafana` and `Prometheus`respectively at `http://locahost:3000` and `http://localhost:7070`. The following is a 
 screenshot of the application dashboard available in `Grafana` that leverages [Micrometer dashboard](https://grafana.com/grafana/dashboards/4701) for JVM application 
-(Java, Spring Boot, Micronaut)
+(Java, Spring Boot, Micronaut) and a custom dashboard that shows business metrics
 
-![Application dashboard](img/grafana-micrometer-dashboard.jpg)
+### Operational metrics
+
+![operational metrics dashboard](img/grafana-micrometer-dashboard.jpg)
+
+
+### Business metrics
+
+![business metrics dashboard](img/grafana-micrometer-dashboard.jpg)
