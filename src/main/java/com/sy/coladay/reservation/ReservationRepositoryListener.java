@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * Event handler around auto generated reservation repository.
  */
 @Component
-@RepositoryEventHandler(Reservation.class)
+@RepositoryEventHandler
 @AllArgsConstructor
 @Slf4j
 @SuppressWarnings("unused")

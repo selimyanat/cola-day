@@ -10,6 +10,8 @@ build-docker-file:
 run-in-docker-compose:build-docker-file
 	command -v docker-compose >/dev/null 2>&1 || { echo >&2 "I require docker-compose but it's not installed.Aborting.";}
 	echo 'Running application in docker-compose...'
+	docker build --tag coladay/prom/prometheus:v2.31.1 ./infrastructure/docker-compose/prometheus
+	docker build --tag coladay/grafana/grafana:8.2.3 ./infrastructure/docker-compose/grafana
 	docker-compose down
 	docker-compose up
 
