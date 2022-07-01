@@ -125,4 +125,4 @@ screenshot of the application dashboard available in `Grafana` that leverages [M
 
 ### Business metrics
 
-![business metrics dashboard](img/grafana-micrometer-dashboard.jpg)
+![business metrics dashboard](img/grafana-custom-dashboard.jpg)
