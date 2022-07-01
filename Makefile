@@ -38,6 +38,10 @@ uninstall-from-kubernetes: verify-deployment-requirements
 	echo 'Uninstalling from kubernetes'
 	helm uninstall coladay --namespace coladay
 
+uninstall-docker-compose-containers:
+	echo 'Stopping all containers'
+	docker-compose down
+
 verify-deployment-requirements:
 	command -v helm >/dev/null 2>&1 || { echo >&2 "I require helm but it's not installed.Aborting.";}
 	command -v kubectl >/dev/null 2>&1 || { echo >&2 "I require kubectl but it's not installed. Aborting.";}
