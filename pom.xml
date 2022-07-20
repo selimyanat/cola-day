@@ -43,12 +43,13 @@
 			${project.reporting.outputDirectory}/jacoco-merged-report/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.coverage.exclusions>
-			src/main/java/com/sy/coladay/Bootstrap.java,
+			src/main/java/com/sy/coladay/Bootstrap*,
 			src/main/java/com/sy/coladay/init/*,
-			src/main/java/com/sy/coladay/company/Companies.java,
-			src/main/java/com/sy/coladay/user/Role.java
+			src/main/java/com/sy/coladay/company/Companies*,
+			src/main/java/com/sy/coladay/user/Role*
 		</sonar.coverage.exclusions>
-	</properties>
+    <kotlin.version>1.7.0</kotlin.version>
+  </properties>
 
 	<distributionManagement>
 		<repository>
@@ -169,7 +170,18 @@
 			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 	<build>
 		<plugins>
@@ -261,6 +273,21 @@
 							</resources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>copy-resources</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/generated-docs</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<!-- Live documentation -->
@@ -294,26 +321,6 @@
 						<version>2.0.5.RELEASE</version>
 					</dependency>
 				</dependencies>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.build.directory}/generated-docs</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<!-- Jacoco code coverage -->
 			<plugin>
@@ -446,7 +453,51 @@
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>3.9.1.2184</version>
 			</plugin>
-		</plugins>
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>${kotlin.version}</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jvmTarget>1.8</jvmTarget>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>testCompile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
 	</build>
 
 
