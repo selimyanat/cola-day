@@ -96,7 +96,7 @@ class QuotaService {
 
 
   /**
-   * Delegates the reservation deletion and decrement the reservation counter accordingly..
+   * Delegates the reservation deletion and decrement the reservation counter accordingly.
    *
    * @param pjp the joint point
    */
