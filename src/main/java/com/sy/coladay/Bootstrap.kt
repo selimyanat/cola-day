@@ -1,7 +1,6 @@
 package com.sy.coladay
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import kotlin.jvm.JvmStatic
 import com.sy.coladay.init.ApplicationInitializer
 import org.springframework.boot.SpringApplication
 
