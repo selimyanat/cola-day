@@ -1,42 +1,34 @@
-package com.sy.coladay.user
+package com.sy.coladay.room
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.sy.coladay.company.Companies
-import java.awt.print.Book
+import com.sy.coladay.reservation.Reservation
 import javax.persistence.*
 import javax.validation.constraints.NotEmpty
-
+import javax.validation.constraints.NotNull
 
 /**
- * Represents a user with its core attributes.
+ * Represents a room with its core attributes.
  *
  * @author selim
  */
-@Table(name = "users")
+@Table(name = "rooms")
 @Entity
-data class User (
+data class Room (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
 
-    @Column(nullable = false, unique = true)
+    @Column(length = 9, nullable = false, unique = true)
     @NotEmpty(message = "name cannot be null or empty")
-    var name:  String?,
+    var name: String?,
 
     @Column(nullable = false)
-    @JsonIgnore
-    @NotEmpty(message = "password cannot be null or empty")
-    var password:String,
-
-    @Column(length = 20, nullable = false)
     @Enumerated(EnumType.STRING)
-    var company: Companies,
+    @NotNull(message = "company cannot be null")
+    val owner:  Companies?,
 
-    @Column(length = 10, nullable = false)
-    @Enumerated(EnumType.STRING)
-    @JsonIgnore
-    var role: Role = Role.USER)  {
-
+    @OneToMany(mappedBy = "room")
+    val reservations: List<Reservation>?) {
 
     override fun toString(): String {
         return ("$name")
@@ -51,8 +43,9 @@ data class User (
         // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         if (this === other) return true
 
-        if (other !is User) return false
+        if (other !is Room) return false
 
         return id != null && id == other.id
     }
+
 }
