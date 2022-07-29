@@ -2,7 +2,6 @@ package com.sy.coladay.user
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.sy.coladay.company.Companies
-import java.awt.print.Book
 import javax.persistence.*
 import javax.validation.constraints.NotEmpty
 

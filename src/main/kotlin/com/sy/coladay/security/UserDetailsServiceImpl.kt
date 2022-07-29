@@ -1,12 +1,10 @@
 package com.sy.coladay.security
 
 import com.sy.coladay.user.User
-import lombok.AllArgsConstructor
-import org.springframework.security.core.userdetails.UserDetailsService
 import com.sy.coladay.user.UserRepository
-import kotlin.Throws
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 /**
