@@ -1,8 +1,8 @@
 package com.sy.coladay
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
 import com.sy.coladay.init.ApplicationInitializer
 import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
 
 /**
  * Bootloader of the cola application.
