@@ -42,6 +42,7 @@
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.reporting.outputDirectory}/jacoco-merged-report/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
+		<!-- Is it still relevant ? -->
 		<sonar.coverage.exclusions>
 			src/main/java/com/sy/coladay/Bootstrap*,
 			src/main/java/com/sy/coladay/init/*,
@@ -202,7 +203,7 @@
 				<configuration>
 					<argLine>${surefireArgLine}</argLine>
 					<excludes>
-						<exclude>**/*IT.java</exclude>
+						<exclude>**/*IT.*</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
@@ -219,7 +220,7 @@
 						</goals>
 						<configuration>
 							<includes>
-								<include>**/*IT.java</include>
+								<include>**/*IT.*</include>
 							</includes>
 							<!-- Sets the VM argument line used when integration tests are run. -->
 							<argLine>${failsafeArgLine}</argLine>
