@@ -27,7 +27,7 @@ internal class UserPrincipalTest {
 
         val expectedRole = SimpleGrantedAuthority(Role.USER.name)
         assertAll(
-            Executable { assertThat((underTest as UserPrincipal).user).isSameAs(user) },
+            Executable { assertThat(underTest.user).isSameAs(user) },
             Executable { assertThat(underTest.getUsername()).isEqualTo(user!!.name) },
             Executable { assertThat(underTest.getPassword()).isEqualTo(user!!.password) },
             Executable { assertThat(underTest.getAuthorities()).hasSize(1) },
