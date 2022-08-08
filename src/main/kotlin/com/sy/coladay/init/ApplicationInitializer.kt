@@ -1,25 +1,12 @@
 package com.sy.coladay.init
 
+import java.util.stream.Stream
+
 class ApplicationInitializer {
 
     fun initApplication() {
-        createDatabaseIfNotExists()
-        createSchemaIfNotExists()
-        runDatabaseMigration()
-    }
 
-    private fun createDatabaseIfNotExists() {
-        val task = CreateDatabaseTask()
-        task.exec()
-    }
-
-    private fun createSchemaIfNotExists() {
-        val task = CreateSchemaTask()
-        task.exec()
-    }
-
-    private fun runDatabaseMigration() {
-        val task = DatabaseMigrationTask()
-        task.exec()
+        Stream.of(CreateDatabaseTask(), CreateSchemaTask(), DatabaseMigrationTask())
+            .forEach(Task::exec)
     }
 }
