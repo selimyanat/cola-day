@@ -50,7 +50,10 @@
 			src/main/java/com/sy/coladay/user/Role*
 		</sonar.coverage.exclusions>
     <kotlin.version>1.7.0</kotlin.version>
+		<!-- Mixing java and kotlin -->
 		<sonar.junit.reportPaths>target/surefire-reports</sonar.junit.reportPaths>
+		<sonar.sources>src/main/java,src/main/kotlin</sonar.sources>
+		<sonar.tests>src/test/java,src/test/kotlin</sonar.tests>
   </properties>
 
 	<distributionManagement>
