@@ -45,9 +45,9 @@
 		<!-- Is it still relevant ? -->
 		<sonar.coverage.exclusions>
 			src/main/java/com/sy/coladay/Bootstrap*,
-			src/main/java/com/sy/coladay/init/*,
-			src/main/java/com/sy/coladay/company/Companies*,
-			src/main/java/com/sy/coladay/user/Role*
+			src/main/kotlin/com/sy/coladay/init/*,
+			src/main/kotlin/com/sy/coladay/company/Companies*,
+			src/main/kotlin/com/sy/coladay/user/Role*
 		</sonar.coverage.exclusions>
     <kotlin.version>1.7.0</kotlin.version>
 		<!-- Mixing java and kotlin -->
