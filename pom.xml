@@ -47,7 +47,10 @@
 			src/main/java/com/sy/coladay/Bootstrap*,
 			src/main/kotlin/com/sy/coladay/init/*,
 			src/main/kotlin/com/sy/coladay/company/Companies*,
-			src/main/kotlin/com/sy/coladay/user/Role*
+			src/main/kotlin/com/sy/coladay/user/Role*,
+			src/main/kotlin/com/sy/coladay/user/User.kt,
+			src/main/kotlin/com/sy/coladay/room/Room.kt,
+			src/main/kotlin/com/sy/coladay/reservation/Reservation.kt,
 		</sonar.coverage.exclusions>
     <kotlin.version>1.7.0</kotlin.version>
 		<!-- Mixing java and kotlin -->
@@ -343,10 +346,14 @@
 						<!-- Do not forget to update the property <sonar.coverage.exclusions> at the start of
 						the pom.xml. Otherwise, Sonar will not ignore these files from the coverage reporting
 						-->
+						<!-- Revisit that and potentially replace with annotations -->
 						<exclude>com/sy/coladay/Bootstrap*</exclude>
 						<exclude>com/sy/coladay/init/*</exclude>
 						<exclude>com/sy/coladay/company/Companies*</exclude>
 						<exclude>com/sy/coladay/user/Role*</exclude>
+						<exclude>com/sy/coladay/user/User.kt</exclude>
+						<exclude>com/sy/coladay/room/Room.kt</exclude>
+						<exclude>com/sy/coladay/reservation/Reservation.kt</exclude>
 					</excludes>
 				</configuration>
 				<!-- Credit to https://github.com/pkainulainen/maven-examples/blob/master/code-coverage-jacoco/pom.xml
