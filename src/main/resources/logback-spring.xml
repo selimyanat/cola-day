@@ -33,15 +33,7 @@
     <appender-ref ref="JsonConsole" />
   </logger>
 
-  <logger name="org.springframework.test" level="warn" additivity="false">
-    <appender-ref ref="JsonConsole" />
-  </logger>
-
   <logger name="org.hibernate" level="warn" additivity="false">
-    <appender-ref ref="JsonConsole" />
-  </logger>
-
-  <logger name="com.zaxxer.hikari" level="warn" additivity="false">
     <appender-ref ref="JsonConsole" />
   </logger>
 
