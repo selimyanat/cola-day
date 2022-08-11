@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="ch.qos.logback.classic.PatternLayout">
+        <Pattern>
+          %highlight(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+        </Pattern>
+      </layout>
+    </encoder>
+  </appender>
+
+  <appender name="JsonConsole" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+        <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+          <prettyPrint>true</prettyPrint>
+        </jsonFormatter>
+        <timestampFormat>yyyy-MM-dd' 'HH:mm:ss</timestampFormat>
+      </layout>
+    </encoder>
+  </appender>
+
+
+  <!-- LOG everything at INFO level -->
+  <root level="info">
+    <appender-ref ref="Console" />
+    <appender-ref ref="JsonConsole" />
+  </root>
+
+  <logger name="com.sy.coladay" level="debug" additivity="false">
+    <appender-ref ref="JsonConsole" />
+  </logger>
+
+  <logger name="org.springframework.test" level="warn" additivity="false">
+    <appender-ref ref="JsonConsole" />
+  </logger>
+
+  <logger name="org.hibernate" level="warn" additivity="false">
+    <appender-ref ref="JsonConsole" />
+  </logger>
+
+  <logger name="com.zaxxer.hikari" level="warn" additivity="false">
+    <appender-ref ref="JsonConsole" />
+  </logger>
+
+
+</configuration>
