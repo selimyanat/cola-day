@@ -1,6 +1,6 @@
 package com.sy.coladay
 
-import com.sy.coladay.init.ApplicationInitializer
+import com.sy.coladay.init.applicationInitializer
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
@@ -10,18 +10,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
  * @author selim
  */
 @SpringBootApplication
-open class Bootstrap {
-}
+open class Bootstrap {}
 
 fun main(args: Array<String>) {
     if ("true".equals(System.getenv("ENABLE_COLADAY_INIT_MODE"), ignoreCase = true)) {
-        val initializer = ApplicationInitializer()
-        initializer.initApplication()
+        applicationInitializer()
         return
     }
     if ("true".equals(System.getenv("ENABLE_COLADAY_LOCAL_DEV"), ignoreCase = true)) {
-        val initializer = ApplicationInitializer()
-        initializer.initApplication()
+        applicationInitializer()
         SpringApplication.run(Bootstrap::class.java, *args)
         return
     }

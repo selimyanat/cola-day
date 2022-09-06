@@ -70,10 +70,10 @@ internal class ReservationControllerIT {
     fun `post a reservation return_201`() {
         assertThat(reservationMetrics!!.cokeNumberOfReservations.count()).isEqualTo(0.0)
         assertThat(reservationMetrics!!.pepsiNumberOfReservations.count()).isEqualTo(0.0)
-        val reservation: MutableMap<String, String> = HashMap()
-        reservation["timeSlot"] = TimeSlots.NINE_AM_TO_TEN_AM.name
-        reservation["room"] = "/rooms/1"
 
+        val reservation = mapOf(
+            "timeSlot" to TimeSlots.NINE_AM_TO_TEN_AM.name,
+            "room" to  "/rooms/1")
         mockMvc!!.perform(post("/reservations")
             .with(httpBasic(cokeUser!!.name, cokeUser!!.password))
             .content(objectMapper!!.writeValueAsString(reservation))
@@ -100,10 +100,10 @@ internal class ReservationControllerIT {
             .isEqualTo(0.0)
         assertThat(reservationMetrics!!.pepsiNumberOfReservations.count())
             .isEqualTo(0.0)
-        val reservation: MutableMap<String, String> = HashMap()
-        reservation["timeSlot"] = TimeSlots.NINE_AM_TO_TEN_AM.name
-        reservation["room"] = "/rooms/1"
 
+        val reservation = mapOf(
+            "timeSlot" to TimeSlots.NINE_AM_TO_TEN_AM.name,
+            "room" to  "/rooms/1")
         mockMvc!!.perform(
             post("/reservations")
                 .with(httpBasic("unknownUser", "aPassword"))
@@ -113,6 +113,7 @@ internal class ReservationControllerIT {
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isUnauthorized)
             .andExpect(status().reason("Unauthorized"))
+
         assertThat(reservationMetrics!!.cokeNumberOfReservations.count()).isEqualTo(0.0)
         assertThat(reservationMetrics!!.pepsiNumberOfReservations.count()).isEqualTo(0.0)
     }
@@ -122,9 +123,9 @@ internal class ReservationControllerIT {
     fun `post a reservation on a busy time slot return 409`() {
         assertThat(reservationMetrics!!.cokeNumberOfReservations.count()).isEqualTo(0.0)
         assertThat(reservationMetrics!!.pepsiNumberOfReservations.count()).isEqualTo(0.0)
-        val reservationOnBusySchedule: MutableMap<String, String> = HashMap()
-        reservationOnBusySchedule["timeSlot"] = TimeSlots.EIGHT_AM_TO_NINE_AM.name
-        reservationOnBusySchedule["room"] = "/rooms/1"
+        val reservationOnBusySchedule = mapOf(
+            "timeSlot" to TimeSlots.EIGHT_AM_TO_NINE_AM.name,
+            "room" to  "/rooms/1")
 
         mockMvc!!.perform(post("/reservations")
             .with(httpBasic(pepsiUser!!.name, pepsiUser!!.password))
@@ -142,33 +143,33 @@ internal class ReservationControllerIT {
     @Test
     fun `get reservations return 200` () {
 
-            mockMvc!!.perform(get("/reservations")
-                    .with(httpBasic(cokeUser!!.name, cokeUser!!.password))
-                    .accept(MediaTypes.HAL_JSON_VALUE))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk)
-                .andExpect(jsonPath("$._embedded.reservations[0].timeSlot",
-                    `is`("EIGHT_AM_TO_NINE_AM")))
-                .andExpect(jsonPath("$._embedded.reservations[0]._links.length()",
-                    `is`(4)))
-                .andExpect(jsonPath("$._embedded.reservations[0]._links.self",
-                    notNullValue()))
-                .andExpect(jsonPath("$._embedded.reservations[0]._links.reservation",
-                    notNullValue()))
-                .andExpect(jsonPath("$._embedded.reservations[0]._links.organizer",
-                    notNullValue()))
-                .andExpect(jsonPath("$._embedded.reservations[0]._links.room",
-                    notNullValue()))
-                .andExpect(jsonPath("$._links.length()", `is`(3)))
-                .andExpect(jsonPath("$._links.self", notNullValue()))
-                .andExpect(jsonPath("$._links.profile", notNullValue()))
-                .andExpect(jsonPath("$._links.search", notNullValue()))
-                .andExpect(jsonPath("$.page", notNullValue()))
-                .andExpect(jsonPath("$.page.size", CoreMatchers.`is`(20)))
-                .andExpect(jsonPath("$.page.totalElements", `is`(1)))
-                .andExpect(jsonPath("$.page.totalPages", `is`(1)))
-                .andExpect(jsonPath("$.page.number", CoreMatchers.`is`(0)))
-                .andDo(document("get-all-reservations-by-page"))
+        mockMvc!!.perform(get("/reservations")
+                .with(httpBasic(cokeUser!!.name, cokeUser!!.password))
+                .accept(MediaTypes.HAL_JSON_VALUE))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$._embedded.reservations[0].timeSlot",
+                `is`("EIGHT_AM_TO_NINE_AM")))
+            .andExpect(jsonPath("$._embedded.reservations[0]._links.length()",
+                `is`(4)))
+            .andExpect(jsonPath("$._embedded.reservations[0]._links.self",
+                notNullValue()))
+            .andExpect(jsonPath("$._embedded.reservations[0]._links.reservation",
+                notNullValue()))
+            .andExpect(jsonPath("$._embedded.reservations[0]._links.organizer",
+                notNullValue()))
+            .andExpect(jsonPath("$._embedded.reservations[0]._links.room",
+                notNullValue()))
+            .andExpect(jsonPath("$._links.length()", `is`(3)))
+            .andExpect(jsonPath("$._links.self", notNullValue()))
+            .andExpect(jsonPath("$._links.profile", notNullValue()))
+            .andExpect(jsonPath("$._links.search", notNullValue()))
+            .andExpect(jsonPath("$.page", notNullValue()))
+            .andExpect(jsonPath("$.page.size", CoreMatchers.`is`(20)))
+            .andExpect(jsonPath("$.page.totalElements", `is`(1)))
+            .andExpect(jsonPath("$.page.totalPages", `is`(1)))
+            .andExpect(jsonPath("$.page.number", CoreMatchers.`is`(0)))
+            .andDo(document("get-all-reservations-by-page"))
         }
 
     @Test
@@ -176,10 +177,10 @@ internal class ReservationControllerIT {
     fun `post a reservation when the quota is reached return 409`() {
         assertThat(reservationMetrics!!.cokeNumberOfReservations.count()).isEqualTo(0.0)
         assertThat(reservationMetrics!!.pepsiNumberOfReservations.count()).isEqualTo(0.0)
-        val firstReservation: MutableMap<String, String> = HashMap()
-        firstReservation["timeSlot"] = TimeSlots.TEN_AM_TO_ELEVEN_AM.name
-        firstReservation["room"] = "/rooms/10"
 
+        val firstReservation = mapOf(
+            "timeSlot" to TimeSlots.TEN_AM_TO_ELEVEN_AM.name,
+            "room" to  "/rooms/10")
         mockMvc!!.perform(post("/reservations")
                 .with(httpBasic(pepsiUser!!.name, pepsiUser!!.password))
                 .content(objectMapper!!.writeValueAsString(firstReservation))
@@ -189,9 +190,10 @@ internal class ReservationControllerIT {
             .andExpect(status().isCreated)
         assertThat(reservationMetrics!!.cokeNumberOfReservations.count()).isEqualTo(0.0)
         assertThat(reservationMetrics!!.pepsiNumberOfReservations.count()).isEqualTo(1.0)
-        val reservation: MutableMap<String, String> = HashMap()
-        reservation["timeSlot"] = TimeSlots.TEN_AM_TO_ELEVEN_AM.name
-        reservation["room"] = "/rooms/1"
+
+        val reservation = mapOf(
+            "timeSlot" to TimeSlots.TEN_AM_TO_ELEVEN_AM.name,
+            "room" to  "/rooms/1")
         mockMvc!!.perform(post("/reservations")
                 .with(httpBasic(pepsiUser!!.name, pepsiUser!!.password))
                 .content(objectMapper!!.writeValueAsString(reservation))

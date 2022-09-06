@@ -71,7 +71,7 @@ open class QuotaService(
     fun interceptSaveOperation(pjp: ProceedingJoinPoint): Reservation {
         val reservation = pjp.args[0] as Reservation
         val counter = getCounter(reservation.organizer.company)
-        val isQuotaLimitReached = Predicate { meeting1: Reservation? -> counter.increment() }
+        val isQuotaLimitReached = Predicate { _: Reservation? -> counter.increment() }
         if (isQuotaLimitReached.negate().test(reservation)) {
             throw QuotaLimitReachedException(
                 "Reservation for " + reservation.organizer.company
@@ -79,11 +79,7 @@ open class QuotaService(
             )
         }
         return Try.of { pjp.proceed(pjp.args) }
-            .onFailure { throwable: Throwable? ->
-                LOG.info(
-                    "Could not create reservation for {} ",
-                    reservation.organizer.company
-                )
+            .onFailure { LOG.info("Could not create reservation for {} ", reservation.organizer.company)
                 counter.decrement()
             }
             .getOrElseThrow { throwable: Throwable? -> throwable } as Reservation
