@@ -1,9 +1,10 @@
 package com.sy.coladay.init
 
 import lombok.extern.slf4j.Slf4j
-import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.StringUtils.isAlpha
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DriverManagerDataSource
+import java.lang.String.format
 
 @Slf4j
 class CreateSchemaTask(
@@ -18,11 +19,8 @@ class CreateSchemaTask(
     private val dbSchema: String
 
     init {
-        require(StringUtils.isAlpha(dbSchema)) {
-            String.format(
-                "Database schema %s must contain letters "
-                        + "only", dbSchema
-            )
+        require(isAlpha(dbSchema)) {
+            format("Database schema %s must contain letters only", dbSchema)
         }
         this.dbUrl = dbUrl
         this.dbUser = dbUser
@@ -36,24 +34,25 @@ class CreateSchemaTask(
         System.getenv("COLADAY_DB_USER_PASSWORD"),
         System.getenv("COLADAY_DB_SCHEMA")
     ) {
-        require(StringUtils.isAlpha(dbSchema)) {
-            String.format(
-                "Database schema %s must contain letters "
-                        + "only", dbSchema
-            )
+        require(isAlpha(dbSchema)) {
+            format("Database schema %s must contain letters only", dbSchema)
         }
     }
 
     override fun exec() {
+
+        val dataSource = DriverManagerDataSource()
+        dataSource.apply {
+            setDriverClassName("org.postgresql.Driver")
+            url = dbUrl
+            username = dbUser
+            password = dbUserPassword
+        }
+
         try {
-            val dataSource = DriverManagerDataSource()
-            dataSource.setDriverClassName("org.postgresql.Driver")
-            dataSource.url = dbUrl
-            dataSource.username = dbUser
-            dataSource.password = dbUserPassword
-            val jdbcTemplate = JdbcTemplate(dataSource)
-            val createSchemaIfNotExists = String.format("CREATE SCHEMA IF NOT EXISTS %s", dbSchema)
-            jdbcTemplate.execute(createSchemaIfNotExists)
+            with(JdbcTemplate(dataSource)) {
+                execute("CREATE SCHEMA IF NOT EXISTS $dbSchema")
+            }
         } catch (throwable: Throwable) {
             throw DatabaseSchemaCreationFailure(throwable)
         }
