@@ -1,10 +1,11 @@
 package com.sy.coladay.init
 
-import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.StringUtils.isAlpha
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DriverManagerDataSource
+import java.lang.String.format
 
 class CreateDatabaseTask @JvmOverloads constructor(
     dbAdminUrl: String = System.getenv("DB_ADMIN_URL"),
@@ -21,11 +22,8 @@ class CreateDatabaseTask @JvmOverloads constructor(
     private val databaseName: String
 
     init {
-        require(StringUtils.isAlpha(databaseName)) {
-            String.format(
-                "Database name %s must contain letters "
-                        + "only", databaseName
-            )
+        require(isAlpha(databaseName)) {
+            format("Database name %s must contain letters only", databaseName)
         }
         this.dbAdminUrl = dbAdminUrl
         this.dbAdminUser = dbAdminUser
@@ -34,35 +32,37 @@ class CreateDatabaseTask @JvmOverloads constructor(
     }
 
     override fun exec() {
-        CreateDatabaseTask.LOG.info(
+        LOG.info(
             "Running database creation task with db admin url {}, user {} and cola db name {} ",
-            dbAdminUrl, dbAdminUser, databaseName
-        )
-        try {
-            val dataSource = DriverManagerDataSource()
-            dataSource.setDriverClassName("org.postgresql.Driver")
-            dataSource.url = dbAdminUrl
-            dataSource.username = dbAdminUser
-            dataSource.password = dbAdminPassword
-            val jdbcTemplate = JdbcTemplate(dataSource)
-            val dbExists = "SELECT count(*) FROM pg_database WHERE datname = ?"
-            val count = jdbcTemplate.queryForObject(
-                dbExists, arrayOf<Any>(databaseName),
-                Int::class.java
-            )
+            dbAdminUrl, dbAdminUser, databaseName)
 
+        val dataSource = DriverManagerDataSource()
+        dataSource.apply {
+            setDriverClassName("org.postgresql.Driver")
+            url = dbAdminUrl
+            username = dbAdminUser
+            password = dbAdminPassword
+        }
+
+        try {
             // https://www.baeldung.com/sql-injection
             // Could not use prepared statement here as this approach only works for placeholders used
             // as values. The main reason behind this is the very nature of a prepared statement:
             // database server use them to cache the query plan required to pull the result set, which
             // usually is the same for any possible value. This is not true for table names and other
             // constructs available in the SQL language such as columns used in an order by clause.
-            if (count == 0) {
-                jdbcTemplate.execute(String.format("CREATE DATABASE %s", databaseName))
-                LOG.info("Database {} created", databaseName)
-            } else {
-                LOG.info("Skip creating database {} as it already exist", databaseName
-                )
+            with(JdbcTemplate(dataSource)) {
+                val dbExists = "SELECT count(*) FROM pg_database WHERE datname = ?"
+                queryForObject(dbExists, arrayOf<Any>(databaseName), Int::class.java)
+                    .apply {
+                        when(this) {
+                            0 -> {
+                                execute(String.format("CREATE DATABASE %s", databaseName))
+                                LOG.info("Database {} created", databaseName)
+                            }
+                            else -> LOG.info("Skip creating database {} as it already exist", databaseName)
+                        }
+                    }
             }
         } catch (throwable: Throwable) {
             throw DatabaseCreationFailure(throwable)

@@ -21,7 +21,7 @@ class UserDetailsServiceImpl(private val userRepository: UserRepository) : UserD
             .findByName(username)
             .map { user: User? -> UserPrincipal(user!!)}
             .orElseThrow {
-                UsernameNotFoundException(String.format("Username %s not found", username))
+                UsernameNotFoundException("Username $username not found")
             }
     }
 }

@@ -31,18 +31,17 @@ open class ReservationMetrics @Autowired constructor(private val meterRegistry: 
 
     @HandleAfterCreate
     fun handleNewReservation(reservation: Reservation) {
-        if (Companies.COKE == reservation.organizer.company) {
-            cokeNumberOfReservations.increment()
-        } else if (Companies.PEPSI == reservation.organizer.company) {
-            pepsiNumberOfReservations.increment()
-        } else {
-            LOG.warn(
+
+        when(reservation.organizer.company) {
+
+            Companies.COKE -> cokeNumberOfReservations.increment()
+            Companies.PEPSI -> pepsiNumberOfReservations.increment()
+            else -> {LOG.warn(
                 "Could not compute the metric for the reservation with id {} and company {}. " +
                         "Metrics "
                         + "export for that company might not be supported. ",
                 reservation.id,
-                reservation.organizer.company.name
-            )
+                reservation.organizer.company.name)}
         }
     }
 
